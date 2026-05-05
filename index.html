@@ -532,16 +532,22 @@
     /* ==========================================================
        FOOD VIEW
        ========================================================== */
-    .food-search-area {
-      position: sticky;
-      top: calc(var(--safe-top) + 88px);
-      z-index: 10;
-      background: var(--bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      margin: -20px -20px 16px;
-      padding: 12px 20px 14px;
-      border-bottom: 1px solid var(--border);
+    .food-search-card {
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r);
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .food-filter-card {
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r);
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
     }
 
     .search-box {
@@ -630,7 +636,7 @@
     .filter-pills {
       display: flex;
       gap: 6px;
-      margin-top: 12px;
+      margin-top: 0;
       overflow-x: auto;
       padding-bottom: 2px;
       scrollbar-width: none;
@@ -670,7 +676,8 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-top: 8px;
+      margin-top: 0;
+      padding-top: 0;
     }
 
     .food-card {
@@ -1114,7 +1121,8 @@
     @media (min-width: 540px) {
       .content { padding: 28px 28px calc(110px + var(--safe-bottom)); }
       .app-header { padding: 22px 28px 16px; }
-      .food-search-area { margin: -28px -28px 18px; padding: 14px 28px 16px; }
+      .food-search-card { padding: 16px; }
+      .food-filter-card { padding: 14px 16px; margin-bottom: 24px; }
     }
   </style>
 </head>
@@ -1193,7 +1201,7 @@
 
       <!-- FOOD VIEW -->
       <section class="view view-food" data-view="food" hidden>
-        <div class="food-search-area">
+        <div class="food-search-card">
           <div class="search-box">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="11" cy="11" r="8"/>
@@ -1205,6 +1213,8 @@
             </button>
             <div class="suggestions" id="suggestions" hidden></div>
           </div>
+        </div>
+        <div class="food-filter-card">
           <div class="filter-pills" id="filter-pills">
             <button class="filter-pill active" data-filter="all">Tous <span class="pill-count" id="count-all"></span></button>
             <button class="filter-pill" data-filter="ok">✓ OK <span class="pill-count" id="count-ok"></span></button>
@@ -1331,43 +1341,43 @@
        PREGNANCY DATA — semaines 4 à 40
        ========================================================== */
     const WEEKS = [
-      { w: 4,  taille: 0.4,  poids: 0.4,  comp: 'graine de pavot',     emoji: '·',  desc: "L'embryon vient de s'implanter dans l'utérus. Il commence sa nidation et les premières cellules se différencient." },
-      { w: 5,  taille: 0.6,  poids: 0.5,  comp: 'grain de sésame',     emoji: '🌱', desc: "Le tube neural se forme : c'est le futur cerveau et la moelle épinière. Le minuscule cœur commence à battre faiblement." },
-      { w: 6,  taille: 0.8,  poids: 0.7,  comp: 'lentille',            emoji: '🔴', desc: "Les bourgeons des bras et des jambes apparaissent. Le visage commence à se dessiner avec des taches sombres pour les yeux." },
-      { w: 7,  taille: 1.3,  poids: 1,    comp: 'myrtille',            emoji: '🫐', desc: "Le cœur bat désormais nettement (≈ 150 bpm). Les organes principaux se mettent en place, et les doigts esquissent leur formation." },
-      { w: 8,  taille: 1.6,  poids: 1.5,  comp: 'framboise',           emoji: '🌸', desc: "Curtis ressemble enfin à un humain miniature. Les paupières se forment, les bras se plient au coude." },
-      { w: 9,  taille: 2.3,  poids: 2,    comp: 'cerise',              emoji: '🍒', desc: "L'embryon devient officiellement un fœtus. Les premiers mouvements existent déjà, même si tu ne les sens pas encore." },
-      { w: 10, taille: 3.1,  poids: 4,    comp: 'fraise',              emoji: '🍓', desc: "Tous les organes vitaux sont en place et commencent à fonctionner. Les ongles et les cheveux se mettent à pousser." },
-      { w: 11, taille: 4.1,  poids: 7,    comp: 'citron vert',         emoji: '🟢', desc: "Curtis peut maintenant ouvrir et fermer les poings. Les organes génitaux externes se développent." },
-      { w: 12, taille: 5.4,  poids: 14,   comp: 'prune',               emoji: '🍑', desc: "Fin du premier trimestre. Curtis bouge beaucoup, sursaute, fait des grimaces. Les risques de fausse couche diminuent." },
-      { w: 13, taille: 7.4,  poids: 23,   comp: 'pêche',               emoji: '🍑', desc: "Les empreintes digitales se dessinent. Curtis peut sucer son pouce et avaler du liquide amniotique." },
-      { w: 14, taille: 8.7,  poids: 43,   comp: 'citron',              emoji: '🍋', desc: "Curtis fait des expressions du visage : froncements de sourcils, grimaces. Le fin duvet (lanugo) recouvre la peau." },
-      { w: 15, taille: 10.1, poids: 70,   comp: 'pomme',               emoji: '🍎', desc: "Curtis entend les premiers sons étouffés : ton cœur, ta voix, les bruits digestifs. Les os durcissent progressivement." },
-      { w: 16, taille: 11.6, poids: 100,  comp: 'avocat',              emoji: '🥑', desc: "Les muscles du cou se renforcent : Curtis peut tenir sa tête. Tu sens peut-être les premiers mouvements (« papillons »)." },
-      { w: 17, taille: 13,   poids: 140,  comp: 'poire',               emoji: '🍐', desc: "La graisse commence à se déposer sous la peau. Le squelette, jusqu'ici cartilagineux, se transforme en os." },
-      { w: 18, taille: 14.2, poids: 190,  comp: 'poivron',             emoji: '🫑', desc: "Curtis bouge beaucoup, étire bras et jambes, et tu commences peut-être à sentir ces mouvements distinctement." },
-      { w: 19, taille: 15.3, poids: 240,  comp: 'tomate',              emoji: '🍅', desc: "Le vernix caseosa, un enduit blanc protecteur, recouvre la peau de Curtis. Les sens (goût, odorat, toucher) se développent." },
-      { w: 20, taille: 25.6, poids: 300,  comp: 'banane',              emoji: '🍌', desc: "Mi-parcours ! L'écho morphologique a souvent lieu cette semaine. Curtis entend ta voix de plus en plus clairement." },
-      { w: 21, taille: 26.7, poids: 360,  comp: 'carotte',             emoji: '🥕', desc: "Curtis avale du liquide amniotique : c'est l'apprentissage de la digestion. Ses sourcils et cils sont visibles." },
-      { w: 22, taille: 27.8, poids: 430,  comp: 'papaye',              emoji: '🥭', desc: "Les sens s'affinent : Curtis perçoit la lumière à travers la paroi abdominale et reconnaît ta voix." },
-      { w: 23, taille: 28.9, poids: 501,  comp: 'mangue',              emoji: '🥭', desc: "Curtis prend du poids rapidement et sa peau, encore translucide, se pigmente. Les poumons continuent leur maturation." },
-      { w: 24, taille: 30,   poids: 600,  comp: 'épi de maïs',         emoji: '🌽', desc: "Date de viabilité : en cas de naissance prématurée, les chances de survie deviennent réelles avec une prise en charge néonatale." },
-      { w: 25, taille: 34.6, poids: 660,  comp: 'chou-fleur',          emoji: '🥦', desc: "Curtis réagit aux sons par des mouvements ou des changements de rythme cardiaque. Les narines s'ouvrent." },
-      { w: 26, taille: 35.6, poids: 760,  comp: 'salade',              emoji: '🥬', desc: "Les yeux s'ouvrent enfin et Curtis cligne des paupières. Il distingue maintenant l'obscurité de la lumière." },
-      { w: 27, taille: 36.6, poids: 875,  comp: 'aubergine',           emoji: '🍆', desc: "Début du troisième trimestre. Curtis a un cycle veille-sommeil. Tu sens peut-être ses hoquets, comme de petits soubresauts rythmés." },
-      { w: 28, taille: 37.6, poids: 1000, comp: 'noix de coco',        emoji: '🥥', desc: "Curtis pèse maintenant 1 kg ! Le cerveau se complexifie rapidement et forme de nouvelles connexions chaque seconde." },
-      { w: 29, taille: 38.6, poids: 1150, comp: 'courge butternut',    emoji: '🎃', desc: "Les os sont entièrement formés mais encore souples. Curtis prend du poids et de la graisse pour réguler sa température." },
-      { w: 30, taille: 39.9, poids: 1300, comp: 'chou',                emoji: '🥬', desc: "Le lanugo (duvet) commence à disparaître. Les cheveux poussent et Curtis voit mieux la lumière qui filtre." },
-      { w: 31, taille: 41.1, poids: 1500, comp: 'ananas',              emoji: '🍍', desc: "Curtis bouge beaucoup mais l'espace devient plus restreint. Tu peux sentir distinctement ses pieds et ses coudes." },
-      { w: 32, taille: 42.4, poids: 1700, comp: 'courge',              emoji: '🎃', desc: "Curtis se positionne souvent tête en bas en prévision de l'accouchement. Les ongles atteignent le bout des doigts." },
-      { w: 33, taille: 43.7, poids: 1900, comp: 'melon',               emoji: '🍈', desc: "Le système immunitaire se renforce grâce aux anticorps que tu transmets. La peau devient lisse et rosée." },
-      { w: 34, taille: 45,   poids: 2100, comp: 'cantaloup',           emoji: '🍈', desc: "Les poumons se préparent à respirer de l'air. Curtis entend tout très clairement maintenant." },
-      { w: 35, taille: 46.2, poids: 2400, comp: 'laitue romaine',      emoji: '🥬', desc: "Curtis prend environ 200 g par semaine. Les reins fonctionnent et le foie traite déjà certains déchets." },
-      { w: 36, taille: 47.4, poids: 2600, comp: 'papaye',              emoji: '🥭', desc: "Curtis est considéré « presque à terme ». Il continue de prendre du poids et de la graisse pour se préparer à la vie extérieure." },
-      { w: 37, taille: 48.6, poids: 2850, comp: 'bette',               emoji: '🌿', desc: "Curtis est considéré comme à terme ! Il pourrait naître à tout moment et serait parfaitement viable." },
-      { w: 38, taille: 49.8, poids: 3000, comp: 'poireau',             emoji: '🌱', desc: "La plupart du vernix et du lanugo a disparu. Curtis est prêt, on attend juste son moment." },
-      { w: 39, taille: 50.7, poids: 3300, comp: 'pastèque',            emoji: '🍉', desc: "Curtis est pleinement développé. Ses ongles peuvent dépasser le bout des doigts et ses poumons sont matures." },
-      { w: 40, taille: 51.2, poids: 3500, comp: 'citrouille',          emoji: '🎃', desc: "Terme atteint ! Curtis peut arriver d'un jour à l'autre. Tu vas bientôt rencontrer ce petit être que tu portes depuis 9 mois." }
+      { w: 4 , art: 'une', taille: 0.4,  poids: 0.4,  comp: 'graine de pavot',     emoji: '·',  desc: "L'embryon vient de s'implanter dans l'utérus. Il commence sa nidation et les premières cellules se différencient." },
+      { w: 5 , art: 'une', taille: 0.6,  poids: 0.5,  comp: 'graine de pomme',     emoji: '🫘', desc: "Le tube neural se forme : c'est le futur cerveau et la moelle épinière. Le minuscule cœur commence à battre faiblement." },
+      { w: 6 , art: 'un',  taille: 0.8,  poids: 0.7,  comp: 'petit pois',          emoji: '🟢', desc: "Les bourgeons des bras et des jambes apparaissent. Le visage commence à se dessiner avec des taches sombres pour les yeux." },
+      { w: 7 , art: 'une', taille: 1.3,  poids: 1,    comp: 'myrtille',            emoji: '🫐', desc: "Le cœur bat désormais nettement (≈ 150 bpm). Les organes principaux se mettent en place, et les doigts esquissent leur formation." },
+      { w: 8 , art: 'une', taille: 1.6,  poids: 1.5,  comp: 'fraise',              emoji: '🍓', desc: "Curtis ressemble enfin à un humain miniature. Les paupières se forment, les bras se plient au coude." },
+      { w: 9 , art: 'une', taille: 2.3,  poids: 2,    comp: 'olive',               emoji: '🫒', desc: "L'embryon devient officiellement un fœtus. Les premiers mouvements existent déjà, même si tu ne les sens pas encore." },
+      { w: 10, art: 'une', taille: 3.1,  poids: 4,    comp: 'cerise',              emoji: '🍒', desc: "Tous les organes vitaux sont en place et commencent à fonctionner. Les ongles et les cheveux se mettent à pousser." },
+      { w: 11, art: 'un',  taille: 4.1,  poids: 7,    comp: 'citron vert',         emoji: '🍋‍🟩', desc: "Curtis peut maintenant ouvrir et fermer les poings. Les organes génitaux externes se développent." },
+      { w: 12, art: 'un',  taille: 5.4,  poids: 14,   comp: 'kiwi',                emoji: '🥝', desc: "Fin du premier trimestre. Curtis bouge beaucoup, sursaute, fait des grimaces. Les risques de fausse couche diminuent." },
+      { w: 13, art: 'un',  taille: 7.4,  poids: 23,   comp: 'citron',              emoji: '🍋', desc: "Les empreintes digitales se dessinent. Curtis peut sucer son pouce et avaler du liquide amniotique." },
+      { w: 14, art: 'une', taille: 8.7,  poids: 43,   comp: 'nectarine',           emoji: '🥭', desc: "Curtis fait des expressions du visage : froncements de sourcils, grimaces. Le fin duvet (lanugo) recouvre la peau." },
+      { w: 15, art: 'une', taille: 10.1, poids: 70,   comp: 'pomme',               emoji: '🍎', desc: "Curtis entend les premiers sons étouffés : ton cœur, ta voix, les bruits digestifs. Les os durcissent progressivement." },
+      { w: 16, art: 'un',  taille: 11.6, poids: 100,  comp: 'avocat',              emoji: '🥑', desc: "Les muscles du cou se renforcent : Curtis peut tenir sa tête. Tu sens peut-être les premiers mouvements (« papillons »)." },
+      { w: 17, art: 'une', taille: 13,   poids: 140,  comp: 'poire',               emoji: '🍐', desc: "La graisse commence à se déposer sous la peau. Le squelette, jusqu'ici cartilagineux, se transforme en os." },
+      { w: 18, art: 'un',  taille: 14.2, poids: 190,  comp: 'poivron',             emoji: '🫑', desc: "Curtis bouge beaucoup, étire bras et jambes, et tu commences peut-être à sentir ces mouvements distinctement." },
+      { w: 19, art: 'une', taille: 15.3, poids: 240,  comp: 'grosse tomate',       emoji: '🍅', desc: "Le vernix caseosa, un enduit blanc protecteur, recouvre la peau de Curtis. Les sens (goût, odorat, toucher) se développent." },
+      { w: 20, art: 'un',  taille: 25.6, poids: 300,  comp: 'artichaut',           emoji: '🌿', desc: "Mi-parcours ! L'écho morphologique a souvent lieu cette semaine. Curtis entend ta voix de plus en plus clairement." },
+      { w: 21, art: 'une', taille: 26.7, poids: 360,  comp: 'carotte',             emoji: '🥕', desc: "Curtis avale du liquide amniotique : c'est l'apprentissage de la digestion. Ses sourcils et cils sont visibles." },
+      { w: 22, art: 'une', taille: 27.8, poids: 430,  comp: 'banane',              emoji: '🍌', desc: "Les sens s'affinent : Curtis perçoit la lumière à travers la paroi abdominale et reconnaît ta voix." },
+      { w: 23, art: 'un',  taille: 28.9, poids: 501,  comp: 'pamplemousse',        emoji: '🍊', desc: "Curtis prend du poids rapidement et sa peau, encore translucide, se pigmente. Les poumons continuent leur maturation." },
+      { w: 24, art: 'un',  taille: 30,   poids: 600,  comp: 'épi de maïs',         emoji: '🌽', desc: "Date de viabilité : en cas de naissance prématurée, les chances de survie deviennent réelles avec une prise en charge néonatale." },
+      { w: 25, art: 'un',  taille: 34.6, poids: 660,  comp: 'rutabaga',            emoji: '🥔', desc: "Curtis réagit aux sons par des mouvements ou des changements de rythme cardiaque. Les narines s'ouvrent." },
+      { w: 26, art: 'une', taille: 35.6, poids: 760,  comp: 'salade',              emoji: '🥬', desc: "Les yeux s'ouvrent enfin et Curtis cligne des paupières. Il distingue maintenant l'obscurité de la lumière." },
+      { w: 27, art: 'un',  taille: 36.6, poids: 875,  comp: 'brocoli',             emoji: '🥦', desc: "Début du troisième trimestre. Curtis a un cycle veille-sommeil. Tu sens peut-être ses hoquets, comme de petits soubresauts rythmés." },
+      { w: 28, art: 'une', taille: 37.6, poids: 1000, comp: 'aubergine',           emoji: '🍆', desc: "Curtis pèse maintenant 1 kg ! Le cerveau se complexifie rapidement et forme de nouvelles connexions chaque seconde." },
+      { w: 29, art: 'un',  taille: 38.6, poids: 1150, comp: 'courgeron',           emoji: '🍠', desc: "Les os sont entièrement formés mais encore souples. Curtis prend du poids et de la graisse pour réguler sa température." },
+      { w: 30, art: 'un',  taille: 39.9, poids: 1300, comp: 'chou pommé',          emoji: '🥬', desc: "Le lanugo (duvet) commence à disparaître. Les cheveux poussent et Curtis voit mieux la lumière qui filtre." },
+      { w: 31, art: 'une', taille: 41.1, poids: 1500, comp: 'noix de coco',        emoji: '🥥', desc: "Curtis bouge beaucoup mais l'espace devient plus restreint. Tu peux sentir distinctement ses pieds et ses coudes." },
+      { w: 32, art: 'un',  taille: 42.4, poids: 1700, comp: 'jicama',              emoji: '🥔', desc: "Curtis se positionne souvent tête en bas en prévision de l'accouchement. Les ongles atteignent le bout des doigts." },
+      { w: 33, art: 'un',  taille: 43.7, poids: 1900, comp: 'ananas',              emoji: '🍍', desc: "Le système immunitaire se renforce grâce aux anticorps que tu transmets. La peau devient lisse et rosée." },
+      { w: 34, art: 'une', taille: 45,   poids: 2100, comp: 'courge butternut',    emoji: '🍠', desc: "Les poumons se préparent à respirer de l'air. Curtis entend tout très clairement maintenant." },
+      { w: 35, art: 'un',  taille: 46.2, poids: 2400, comp: 'melon',               emoji: '🍈', desc: "Curtis prend environ 200 g par semaine. Les reins fonctionnent et le foie traite déjà certains déchets." },
+      { w: 36, art: 'une', taille: 47.4, poids: 2600, comp: 'blette',              emoji: '🥬', desc: "Curtis est considéré « presque à terme ». Il continue de prendre du poids et de la graisse pour se préparer à la vie extérieure." },
+      { w: 37, art: 'un',  taille: 48.6, poids: 2850, comp: 'concombre',           emoji: '🥒', desc: "Curtis est considéré comme à terme ! Il pourrait naître à tout moment et serait parfaitement viable." },
+      { w: 38, art: 'une', taille: 49.8, poids: 3000, comp: 'citrouille',          emoji: '🎃', desc: "La plupart du vernix et du lanugo a disparu. Curtis est prêt, on attend juste son moment." },
+      { w: 39, art: 'une', taille: 50.7, poids: 3300, comp: 'pastèque',            emoji: '🍉', desc: "Curtis est pleinement développé. Ses ongles peuvent dépasser le bout des doigts et ses poumons sont matures." },
+      { w: 40, art: 'une', taille: 51.2, poids: 3500, comp: 'pastèque',            emoji: '🍉', desc: "Terme atteint ! Curtis peut arriver d'un jour à l'autre. Tu vas bientôt rencontrer ce petit être que tu portes depuis 9 mois." }
     ];
 
     /* ==========================================================
@@ -1737,7 +1747,7 @@
 
       const apply = () => {
         els.weekNum.textContent = data.w;
-        els.compName.textContent = `une ${data.comp}`;
+        els.compName.textContent = `${data.art} ${data.comp}`;
         els.sizeEmoji.textContent = data.emoji;
         els.statSize.textContent = formatNumber(data.taille);
         els.statWeight.textContent = formatWeight(data.poids);
