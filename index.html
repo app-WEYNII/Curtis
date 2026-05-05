@@ -1,0 +1,2203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#c97d8e" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1a1318" media="(prefers-color-scheme: dark)" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Ma Grossesse" />
+  <meta name="description" content="Suivi de grossesse semaine par semaine et guide d'alimentation" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <title>Ma Grossesse</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..600,0..100;1,9..144,300..500,0..100&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================
+       VARIABLES — palette maternité éditoriale (warm cream / dusty rose / sage)
+       ========================================================== */
+    :root {
+      --bg: #faf6f1;
+      --surface: #ffffff;
+      --surface-2: #f5ede4;
+      --surface-3: #ede0d4;
+
+      --border: rgba(94, 58, 74, 0.08);
+      --border-strong: rgba(94, 58, 74, 0.18);
+
+      --text: #2d1f1f;
+      --text-2: #6b5b56;
+      --text-muted: #9b8d85;
+
+      --primary: #c97d8e;
+      --primary-deep: #a35a6c;
+      --primary-soft: #f4dde2;
+
+      --accent: #8a9a7e;
+      --accent-soft: #e3eadd;
+
+      --plum: #5e3a4a;
+
+      --ok: #6b8a52;
+      --ok-soft: #e3eadd;
+      --warn: #c97f3a;
+      --warn-soft: #f9e4cf;
+      --danger: #b84a36;
+      --danger-soft: #f5d7cf;
+
+      --shadow-sm: 0 1px 2px rgba(94, 58, 74, 0.04);
+      --shadow: 0 4px 20px rgba(94, 58, 74, 0.06);
+      --shadow-lg: 0 16px 40px rgba(94, 58, 74, 0.10);
+
+      --r-sm: 10px;
+      --r: 16px;
+      --r-lg: 24px;
+      --r-xl: 32px;
+
+      --font-display: 'Fraunces', 'Georgia', serif;
+      --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-top: env(safe-area-inset-top, 0px);
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1318;
+      --surface: #251c20;
+      --surface-2: #2f242a;
+      --surface-3: #3a2c33;
+
+      --border: rgba(244, 221, 226, 0.08);
+      --border-strong: rgba(244, 221, 226, 0.16);
+
+      --text: #f5ede4;
+      --text-2: #c9b8b3;
+      --text-muted: #8a7972;
+
+      --primary: #e3a4b5;
+      --primary-deep: #c97d8e;
+      --primary-soft: #3a2832;
+
+      --accent: #a8b89a;
+      --accent-soft: #2c352a;
+
+      --plum: #d6b0bc;
+
+      --ok-soft: #2c352a;
+      --warn-soft: #3a2c1d;
+      --danger-soft: #3a221d;
+
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ==========================================================
+       RESET
+       ========================================================== */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--font-body);
+      font-size: 16px; /* iOS auto-zoom prevention */
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overscroll-behavior-y: none;
+    }
+
+    button {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+      background: none;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    input, select, textarea {
+      font-family: inherit;
+      font-size: 16px; /* iOS auto-zoom prevention */
+      color: inherit;
+    }
+    input[type="search"]::-webkit-search-decoration,
+    input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+    h1, h2, h3, h4 { margin: 0; font-weight: 500; }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+
+    /* Background atmosphere */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 50% at 0% 0%, color-mix(in srgb, var(--primary-soft) 60%, transparent), transparent),
+        radial-gradient(ellipse 70% 50% at 100% 100%, color-mix(in srgb, var(--accent-soft) 50%, transparent), transparent);
+      z-index: -1;
+      opacity: 0.7;
+    }
+
+    /* ==========================================================
+       APP STRUCTURE
+       ========================================================== */
+    .app {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding-top: var(--safe-top);
+      max-width: 640px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .app-header {
+      padding: 18px 20px 14px;
+      position: sticky;
+      top: var(--safe-top);
+      z-index: 20;
+      background: var(--bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      font-variation-settings: "opsz" 24, "SOFT" 50;
+      color: var(--plum);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-soft);
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--text-2);
+      transition: background 200ms, color 200ms, transform 150ms;
+    }
+    .icon-btn:hover { background: var(--surface-2); color: var(--text); }
+    .icon-btn:active { transform: scale(0.94); }
+    .icon-btn svg { width: 20px; height: 20px; }
+
+    .progress-rail {
+      margin-top: 14px;
+    }
+    .progress-bar {
+      height: 4px;
+      background: var(--surface-2);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--progress, 0%);
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+      border-radius: 4px;
+      transition: width 600ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ==========================================================
+       MAIN CONTENT
+       ========================================================== */
+    .content {
+      flex: 1;
+      padding: 20px 20px calc(110px + var(--safe-bottom));
+      overflow-x: hidden;
+    }
+
+    .view {
+      animation: viewIn 320ms ease;
+    }
+    .view[hidden] { display: none; }
+
+    @keyframes viewIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================================
+       SUIVI VIEW
+       ========================================================== */
+    .hero-week {
+      text-align: center;
+      padding: 16px 0 4px;
+      position: relative;
+    }
+
+    .trimester-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .week-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .week-num {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-variation-settings: "opsz" 144, "SOFT" 100;
+      font-size: clamp(110px, 32vw, 180px);
+      line-height: 0.82;
+      letter-spacing: -0.04em;
+      color: var(--plum);
+      transition: opacity 280ms ease;
+    }
+
+    .week-label {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 18px;
+      color: var(--text-2);
+      margin-top: 4px;
+      letter-spacing: 0.02em;
+    }
+
+    .day-info {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* Comparison card */
+    .comparison-card {
+      margin-top: 28px;
+      padding: 28px 24px;
+      background: var(--surface);
+      border-radius: var(--r-xl);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 24px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .comparison-card::before {
+      content: '';
+      position: absolute;
+      inset: -40% -40% auto auto;
+      width: 70%;
+      aspect-ratio: 1;
+      background: radial-gradient(circle, var(--primary-soft), transparent 70%);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .size-frame {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      display: grid;
+      place-items: center;
+    }
+    .size-circle {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, color-mix(in srgb, var(--primary) 25%, var(--primary-soft)), var(--primary-soft));
+      transform: scale(var(--circle-scale, 0.5));
+      transition: transform 700ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: inset 0 -4px 12px rgba(0, 0, 0, 0.04);
+    }
+    .size-emoji {
+      position: relative;
+      font-size: 54px;
+      z-index: 1;
+      transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 280ms;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.08));
+    }
+
+    .comparison-info {
+      position: relative;
+      z-index: 1;
+    }
+    .comparison-name {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 26px;
+      line-height: 1.1;
+      color: var(--plum);
+      margin-bottom: 14px;
+      font-variation-settings: "opsz" 36, "SOFT" 80;
+      transition: opacity 280ms;
+    }
+    .comparison-name::before {
+      content: '≈ ';
+      font-style: italic;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    .comparison-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text);
+      transition: opacity 280ms;
+    }
+
+    /* Description card */
+    .description-card {
+      margin-top: 18px;
+      padding: 22px 24px;
+      background: var(--surface);
+      border-radius: var(--r-lg);
+      border: 1px solid var(--border);
+    }
+    .description-card h3 {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--primary-deep);
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+    .description-card p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text-2);
+      transition: opacity 280ms;
+    }
+
+    /* Week navigation */
+    .week-nav {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .nav-btn {
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-2);
+      transition: background 200ms, color 200ms, border-color 200ms, transform 120ms;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .nav-btn:hover { background: var(--surface-2); color: var(--text); border-color: var(--border-strong); }
+    .nav-btn:active { transform: scale(0.97); }
+    .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Slider */
+    .week-slider-wrap {
+      margin-top: 20px;
+      padding: 18px 22px;
+      background: var(--surface);
+      border-radius: var(--r-lg);
+      border: 1px solid var(--border);
+    }
+    .week-slider-wrap label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .week-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      background: var(--surface-2);
+      border-radius: 4px;
+      outline: none;
+      margin: 6px 0;
+    }
+    .week-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 3px solid var(--surface);
+      box-shadow: 0 2px 8px rgba(201, 125, 142, 0.4);
+      cursor: grab;
+    }
+    .week-slider::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 3px solid var(--surface);
+      box-shadow: 0 2px 8px rgba(201, 125, 142, 0.4);
+      cursor: grab;
+    }
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ==========================================================
+       FOOD VIEW
+       ========================================================== */
+    .food-search-area {
+      position: sticky;
+      top: calc(var(--safe-top) + 88px);
+      z-index: 10;
+      background: var(--bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      margin: -20px -20px 16px;
+      padding: 12px 20px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .search-box {
+      position: relative;
+    }
+    .search-box svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%;
+      padding: 13px 14px 13px 42px;
+      border: 1px solid var(--border-strong);
+      border-radius: 100px;
+      background: var(--surface);
+      transition: border-color 200ms, box-shadow 200ms;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-soft);
+    }
+    .search-clear {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--text-muted);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 150ms;
+    }
+    .search-input:not(:placeholder-shown) ~ .search-clear {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .search-clear:hover { background: var(--surface-2); color: var(--text); }
+
+    /* Autocomplete suggestions */
+    .suggestions {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r);
+      box-shadow: var(--shadow-lg);
+      max-height: 280px;
+      overflow-y: auto;
+      z-index: 50;
+    }
+    .suggestion {
+      width: 100%;
+      padding: 10px 14px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 150ms;
+      border-bottom: 1px solid var(--border);
+    }
+    .suggestion:last-child { border-bottom: 0; }
+    .suggestion:hover, .suggestion.active { background: var(--surface-2); }
+    .suggestion-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .suggestion-name { font-size: 14px; flex: 1; }
+    .suggestion-cat { font-size: 12px; color: var(--text-muted); }
+
+    /* Filter pills */
+    .filter-pills {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .filter-pills::-webkit-scrollbar { display: none; }
+    .filter-pill {
+      padding: 7px 14px;
+      border-radius: 100px;
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-2);
+      white-space: nowrap;
+      transition: all 200ms;
+      flex-shrink: 0;
+    }
+    .filter-pill:hover { background: var(--surface-2); }
+    .filter-pill.active {
+      background: var(--plum);
+      color: var(--surface);
+      border-color: var(--plum);
+    }
+    [data-theme="dark"] .filter-pill.active {
+      background: var(--primary);
+      color: var(--bg);
+      border-color: var(--primary);
+    }
+    .filter-pill .pill-count {
+      font-size: 11px;
+      opacity: 0.7;
+      margin-left: 4px;
+    }
+
+    /* Food list */
+    .food-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .food-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      text-align: left;
+      transition: background 200ms, border-color 200ms, transform 120ms;
+      position: relative;
+      width: 100%;
+    }
+    .food-card:hover { border-color: var(--border-strong); background: var(--surface-2); }
+    .food-card:active { transform: scale(0.99); }
+
+    .food-card[data-status="ok"] { border-left: 3px solid var(--ok); }
+    .food-card[data-status="attention"] { border-left: 3px solid var(--warn); }
+    .food-card[data-status="interdit"] { border-left: 3px solid var(--danger); }
+
+    .food-status {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .food-card[data-status="ok"] .food-status { background: var(--ok-soft); color: var(--ok); }
+    .food-card[data-status="attention"] .food-status { background: var(--warn-soft); color: var(--warn); }
+    .food-card[data-status="interdit"] .food-status { background: var(--danger-soft); color: var(--danger); }
+
+    .food-text {
+      flex: 1;
+      min-width: 0;
+    }
+    .food-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 2px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .food-cat {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .fav-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      transition: color 200ms, background 200ms, transform 150ms;
+    }
+    .fav-btn:hover { background: var(--surface-2); }
+    .fav-btn.is-fav { color: var(--primary); }
+    .fav-btn:active { transform: scale(0.85); }
+    .fav-btn svg { width: 18px; height: 18px; transition: transform 200ms; }
+    .fav-btn.is-fav svg { transform: scale(1.1); }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+    .empty-state .emoji { font-size: 48px; opacity: 0.5; margin-bottom: 12px; }
+    .empty-state p { font-size: 14px; margin: 0; }
+
+    /* ==========================================================
+       MODAL
+       ========================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(45, 31, 31, 0.4);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: grid;
+      place-items: end center;
+      z-index: 100;
+      padding: 0;
+      animation: fadeIn 220ms ease;
+    }
+    .modal-backdrop[hidden] { display: none; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .modal-card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--surface);
+      border-radius: var(--r-xl) var(--r-xl) 0 0;
+      box-shadow: var(--shadow-lg);
+      max-height: 88vh;
+      max-height: 88dvh;
+      overflow-y: auto;
+      animation: slideUp 320ms cubic-bezier(0.32, 0.72, 0, 1);
+      padding-bottom: var(--safe-bottom);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: var(--border-strong);
+      border-radius: 100px;
+      margin: 10px auto 0;
+    }
+
+    .modal-status-banner {
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .modal-status-banner[data-status="ok"] { background: var(--ok-soft); color: var(--ok); }
+    .modal-status-banner[data-status="attention"] { background: var(--warn-soft); color: var(--warn); }
+    .modal-status-banner[data-status="interdit"] { background: var(--danger-soft); color: var(--danger); }
+    .modal-status-banner .status-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: currentColor;
+      color: var(--surface);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+    }
+    [data-theme="dark"] .modal-status-banner .status-circle { color: var(--bg); }
+
+    .modal-body {
+      padding: 24px 24px 28px;
+    }
+
+    .modal-cat-tag {
+      display: inline-block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 26px;
+      letter-spacing: -0.01em;
+      color: var(--plum);
+      margin-bottom: 18px;
+      line-height: 1.15;
+      font-variation-settings: "opsz" 36, "SOFT" 60;
+    }
+
+    .modal-section { margin-bottom: 18px; }
+    .modal-section:last-child { margin-bottom: 0; }
+    .modal-section h4 {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--primary-deep);
+      margin-bottom: 6px;
+    }
+    .modal-section p {
+      margin: 0;
+      font-size: 15px;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn {
+      flex: 1;
+      padding: 13px 18px;
+      border-radius: var(--r);
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 200ms;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-primary {
+      background: var(--plum);
+      color: var(--surface);
+    }
+    .btn-primary:hover { background: var(--text); }
+    [data-theme="dark"] .btn-primary { background: var(--primary); color: var(--bg); }
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+    .btn-secondary:hover { background: var(--surface-3); }
+
+    /* ==========================================================
+       SETTINGS VIEW
+       ========================================================== */
+    .settings-title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 32px;
+      color: var(--plum);
+      margin-bottom: 18px;
+      letter-spacing: -0.01em;
+      font-variation-settings: "opsz" 48, "SOFT" 60;
+    }
+
+    .setting-card {
+      padding: 20px 22px;
+      background: var(--surface);
+      border-radius: var(--r-lg);
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+    .setting-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .setting-card .hint {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0 0 12px;
+    }
+
+    .input-base {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r);
+      background: var(--bg);
+      transition: border-color 200ms, box-shadow 200ms;
+    }
+    .input-base:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-soft);
+    }
+
+    .stepper {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 8px;
+    }
+    .stepper-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 600;
+      display: grid;
+      place-items: center;
+      transition: background 200ms, transform 120ms;
+    }
+    .stepper-btn:hover { background: var(--surface-3); }
+    .stepper-btn:active { transform: scale(0.92); }
+    .stepper-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .stepper-value {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--plum);
+      flex: 1;
+      text-align: center;
+    }
+
+    .actual-week-hint {
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: var(--accent-soft);
+      border-radius: var(--r);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-2);
+    }
+    .actual-week-hint strong { color: var(--accent); font-weight: 700; }
+    .btn-link {
+      background: none;
+      color: var(--primary-deep);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: background 200ms;
+      flex-shrink: 0;
+    }
+    [data-theme="dark"] .btn-link { color: var(--primary); }
+    .btn-link:hover { background: color-mix(in srgb, var(--primary) 12%, transparent); }
+
+    .toggle {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .toggle input { position: absolute; opacity: 0; pointer-events: none; }
+    .toggle-track {
+      width: 48px;
+      height: 28px;
+      border-radius: 100px;
+      background: var(--surface-3);
+      position: relative;
+      transition: background 240ms;
+    }
+    .toggle-track::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--surface);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+      transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .toggle input:checked ~ .toggle-track { background: var(--primary); }
+    .toggle input:checked ~ .toggle-track::after { transform: translateX(20px); }
+
+    .row-between {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .disclaimer {
+      margin-top: 24px;
+      padding: 18px 20px;
+      background: var(--warn-soft);
+      border: 1px solid color-mix(in srgb, var(--warn) 25%, transparent);
+      border-radius: var(--r);
+      color: color-mix(in srgb, var(--warn) 80%, var(--text));
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .disclaimer strong {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 700;
+      color: var(--warn);
+    }
+
+    /* ==========================================================
+       BOTTOM NAV
+       ========================================================== */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 8px 12px calc(8px + var(--safe-bottom));
+      background: var(--bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 4px;
+      z-index: 30;
+    }
+
+    .tab-btn {
+      padding: 8px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 500;
+      border-radius: var(--r);
+      transition: color 200ms, background 200ms;
+      position: relative;
+    }
+    .tab-btn svg { width: 22px; height: 22px; transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .tab-btn.active { color: var(--primary-deep); }
+    [data-theme="dark"] .tab-btn.active { color: var(--primary); }
+    .tab-btn.active svg { transform: scale(1.1); }
+    .tab-btn:hover { color: var(--text); }
+
+    /* ==========================================================
+       CHANGING (week transition state)
+       ========================================================== */
+    .changing .week-num,
+    .changing .comparison-name,
+    .changing .stat-value,
+    .changing .description-card p,
+    .changing .size-emoji {
+      opacity: 0;
+    }
+
+    /* ==========================================================
+       UTIL
+       ========================================================== */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Tablet+ */
+    @media (min-width: 540px) {
+      .content { padding: 28px 28px calc(110px + var(--safe-bottom)); }
+      .app-header { padding: 22px 28px 16px; }
+      .food-search-area { margin: -28px -28px 18px; padding: 14px 28px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="header-inner">
+        <h1 class="brand">Ma Grossesse</h1>
+        <button class="icon-btn" id="theme-toggle" aria-label="Mode sombre">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="theme-icon">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+        </button>
+      </div>
+      <div class="progress-rail">
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="progress-meta">
+          <span id="meta-week">Semaine —</span>
+          <span id="meta-trim">Trimestre —</span>
+          <span id="meta-remaining">— restantes</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="content">
+      <!-- SUIVI VIEW -->
+      <section class="view view-suivi" data-view="suivi">
+        <div class="hero-week" id="hero-week">
+          <div class="trimester-chip" id="trimester-chip">Premier trimestre</div>
+          <div class="week-display">
+            <span class="week-num" id="week-num">12</span>
+            <span class="week-label">semaines de grossesse</span>
+            <span class="day-info" id="day-info">≈ 84 jours · 28 semaines restantes</span>
+          </div>
+        </div>
+
+        <div class="comparison-card" id="comparison-card">
+          <div class="size-frame">
+            <div class="size-circle" id="size-circle"></div>
+            <div class="size-emoji" id="size-emoji">🍑</div>
+          </div>
+          <div class="comparison-info">
+            <div class="comparison-name" id="comparison-name">une prune</div>
+            <div class="comparison-stats">
+              <div class="stat">
+                <span class="stat-label">Taille</span>
+                <span class="stat-value" id="stat-size">5,4 cm</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Poids</span>
+                <span class="stat-value" id="stat-weight">14 g</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="description-card">
+          <h3>Cette semaine</h3>
+          <p id="week-description">…</p>
+        </div>
+
+        <div class="week-nav">
+          <button class="nav-btn" id="prev-week">← Semaine précédente</button>
+          <button class="nav-btn" id="next-week">Semaine suivante →</button>
+        </div>
+
+        <div class="week-slider-wrap">
+          <label for="week-slider">Aller à la semaine</label>
+          <input type="range" min="4" max="40" value="12" class="week-slider" id="week-slider" />
+          <div class="slider-labels"><span>4</span><span>22</span><span>40</span></div>
+        </div>
+      </section>
+
+      <!-- FOOD VIEW -->
+      <section class="view view-food" data-view="food" hidden>
+        <div class="food-search-area">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input type="search" id="food-search" class="search-input" placeholder="Rechercher un aliment…" autocomplete="off" />
+            <button class="search-clear" id="search-clear" aria-label="Effacer">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <div class="suggestions" id="suggestions" hidden></div>
+          </div>
+          <div class="filter-pills" id="filter-pills">
+            <button class="filter-pill active" data-filter="all">Tous <span class="pill-count" id="count-all"></span></button>
+            <button class="filter-pill" data-filter="ok">✓ OK <span class="pill-count" id="count-ok"></span></button>
+            <button class="filter-pill" data-filter="attention">⚠ Attention <span class="pill-count" id="count-attention"></span></button>
+            <button class="filter-pill" data-filter="interdit">✕ Interdits <span class="pill-count" id="count-interdit"></span></button>
+            <button class="filter-pill" data-filter="favorites">★ Favoris <span class="pill-count" id="count-fav"></span></button>
+          </div>
+        </div>
+        <div class="food-list" id="food-list"></div>
+      </section>
+
+      <!-- SETTINGS VIEW -->
+      <section class="view view-settings" data-view="settings" hidden>
+        <h2 class="settings-title">Réglages</h2>
+
+        <div class="setting-card">
+          <h3>Date prévue d'accouchement</h3>
+          <p class="hint">La semaine actuelle sera calculée automatiquement.</p>
+          <input type="date" class="input-base" id="due-date" />
+        </div>
+
+        <div class="setting-card">
+          <h3>Semaine actuelle</h3>
+          <p class="hint">Ajustement manuel (4 à 40).</p>
+          <div class="stepper">
+            <button class="stepper-btn" id="set-week-minus">−</button>
+            <span class="stepper-value" id="set-week-value">12</span>
+            <button class="stepper-btn" id="set-week-plus">+</button>
+          </div>
+          <div id="actual-week-hint" class="actual-week-hint" hidden>
+            <span>Tu es en semaine <strong id="actual-week-num">—</strong> selon ta DPA.</span>
+            <button class="btn-link" id="goto-actual-week">Y revenir</button>
+          </div>
+        </div>
+
+        <div class="setting-card">
+          <div class="row-between">
+            <div>
+              <h3>Mode sombre</h3>
+              <p class="hint" style="margin: 0;">Plus reposant le soir.</p>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="dark-toggle" />
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="setting-card">
+          <div class="row-between">
+            <div>
+              <h3>Réinitialiser</h3>
+              <p class="hint" style="margin: 0;">Efface favoris et réglages.</p>
+            </div>
+            <button class="btn btn-secondary" id="reset-data" style="flex: 0 0 auto; padding: 10px 16px;">Effacer</button>
+          </div>
+        </div>
+
+        <div class="disclaimer">
+          <strong>⚠ Information uniquement</strong>
+          Cette application a un but informatif. Elle ne remplace en aucun cas l'avis d'un professionnel de santé. Consultez votre médecin ou votre sage-femme pour toute question concernant votre grossesse.
+        </div>
+      </section>
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <button class="tab-btn active" data-tab="suivi">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21c4-4 8-7 8-12a8 8 0 0 0-16 0c0 5 4 8 8 12z"/>
+          <circle cx="12" cy="9" r="3"/>
+        </svg>
+        Suivi
+      </button>
+      <button class="tab-btn" data-tab="food">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 11h18M5 11V8a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v3M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/>
+          <path d="M9 5V3M15 5V3"/>
+        </svg>
+        Aliments
+      </button>
+      <button class="tab-btn" data-tab="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        Réglages
+      </button>
+    </nav>
+
+    <!-- MODAL -->
+    <div class="modal-backdrop" id="modal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true">
+        <div class="modal-handle"></div>
+        <div class="modal-status-banner" id="modal-status">
+          <span class="status-circle" id="modal-status-icon">✓</span>
+          <span id="modal-status-text">Autorisé</span>
+        </div>
+        <div class="modal-body">
+          <div class="modal-cat-tag" id="modal-cat">Catégorie</div>
+          <h2 class="modal-title" id="modal-title">Aliment</h2>
+
+          <div class="modal-section">
+            <h4>Pourquoi&nbsp;?</h4>
+            <p id="modal-why">…</p>
+          </div>
+
+          <div class="modal-section" id="modal-alt-section" hidden>
+            <h4>Alternative</h4>
+            <p id="modal-alt">…</p>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn btn-secondary" id="modal-fav">★ Ajouter aux favoris</button>
+            <button class="btn btn-primary" id="modal-close">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================
+       PREGNANCY DATA — semaines 4 à 40
+       ========================================================== */
+    const WEEKS = [
+      { w: 4,  taille: 0.4,  poids: 0.4,  comp: 'graine de pavot',     emoji: '·',  desc: "L'embryon vient de s'implanter dans l'utérus. Il commence sa nidation et les premières cellules se différencient." },
+      { w: 5,  taille: 0.6,  poids: 0.5,  comp: 'grain de sésame',     emoji: '🌱', desc: "Le tube neural se forme : c'est le futur cerveau et la moelle épinière. Le minuscule cœur commence à battre faiblement." },
+      { w: 6,  taille: 0.8,  poids: 0.7,  comp: 'lentille',            emoji: '🔴', desc: "Les bourgeons des bras et des jambes apparaissent. Le visage commence à se dessiner avec des taches sombres pour les yeux." },
+      { w: 7,  taille: 1.3,  poids: 1,    comp: 'myrtille',            emoji: '🫐', desc: "Le cœur bat désormais nettement (≈ 150 bpm). Les organes principaux se mettent en place, et les doigts esquissent leur formation." },
+      { w: 8,  taille: 1.6,  poids: 1.5,  comp: 'framboise',           emoji: '🌸', desc: "Curtis ressemble enfin à un humain miniature. Les paupières se forment, les bras se plient au coude." },
+      { w: 9,  taille: 2.3,  poids: 2,    comp: 'cerise',              emoji: '🍒', desc: "L'embryon devient officiellement un fœtus. Les premiers mouvements existent déjà, même si tu ne les sens pas encore." },
+      { w: 10, taille: 3.1,  poids: 4,    comp: 'fraise',              emoji: '🍓', desc: "Tous les organes vitaux sont en place et commencent à fonctionner. Les ongles et les cheveux se mettent à pousser." },
+      { w: 11, taille: 4.1,  poids: 7,    comp: 'citron vert',         emoji: '🟢', desc: "Curtis peut maintenant ouvrir et fermer les poings. Les organes génitaux externes se développent." },
+      { w: 12, taille: 5.4,  poids: 14,   comp: 'prune',               emoji: '🍑', desc: "Fin du premier trimestre. Curtis bouge beaucoup, sursaute, fait des grimaces. Les risques de fausse couche diminuent." },
+      { w: 13, taille: 7.4,  poids: 23,   comp: 'pêche',               emoji: '🍑', desc: "Les empreintes digitales se dessinent. Curtis peut sucer son pouce et avaler du liquide amniotique." },
+      { w: 14, taille: 8.7,  poids: 43,   comp: 'citron',              emoji: '🍋', desc: "Curtis fait des expressions du visage : froncements de sourcils, grimaces. Le fin duvet (lanugo) recouvre la peau." },
+      { w: 15, taille: 10.1, poids: 70,   comp: 'pomme',               emoji: '🍎', desc: "Curtis entend les premiers sons étouffés : ton cœur, ta voix, les bruits digestifs. Les os durcissent progressivement." },
+      { w: 16, taille: 11.6, poids: 100,  comp: 'avocat',              emoji: '🥑', desc: "Les muscles du cou se renforcent : Curtis peut tenir sa tête. Tu sens peut-être les premiers mouvements (« papillons »)." },
+      { w: 17, taille: 13,   poids: 140,  comp: 'poire',               emoji: '🍐', desc: "La graisse commence à se déposer sous la peau. Le squelette, jusqu'ici cartilagineux, se transforme en os." },
+      { w: 18, taille: 14.2, poids: 190,  comp: 'poivron',             emoji: '🫑', desc: "Curtis bouge beaucoup, étire bras et jambes, et tu commences peut-être à sentir ces mouvements distinctement." },
+      { w: 19, taille: 15.3, poids: 240,  comp: 'tomate',              emoji: '🍅', desc: "Le vernix caseosa, un enduit blanc protecteur, recouvre la peau de Curtis. Les sens (goût, odorat, toucher) se développent." },
+      { w: 20, taille: 25.6, poids: 300,  comp: 'banane',              emoji: '🍌', desc: "Mi-parcours ! L'écho morphologique a souvent lieu cette semaine. Curtis entend ta voix de plus en plus clairement." },
+      { w: 21, taille: 26.7, poids: 360,  comp: 'carotte',             emoji: '🥕', desc: "Curtis avale du liquide amniotique : c'est l'apprentissage de la digestion. Ses sourcils et cils sont visibles." },
+      { w: 22, taille: 27.8, poids: 430,  comp: 'papaye',              emoji: '🥭', desc: "Les sens s'affinent : Curtis perçoit la lumière à travers la paroi abdominale et reconnaît ta voix." },
+      { w: 23, taille: 28.9, poids: 501,  comp: 'mangue',              emoji: '🥭', desc: "Curtis prend du poids rapidement et sa peau, encore translucide, se pigmente. Les poumons continuent leur maturation." },
+      { w: 24, taille: 30,   poids: 600,  comp: 'épi de maïs',         emoji: '🌽', desc: "Date de viabilité : en cas de naissance prématurée, les chances de survie deviennent réelles avec une prise en charge néonatale." },
+      { w: 25, taille: 34.6, poids: 660,  comp: 'chou-fleur',          emoji: '🥦', desc: "Curtis réagit aux sons par des mouvements ou des changements de rythme cardiaque. Les narines s'ouvrent." },
+      { w: 26, taille: 35.6, poids: 760,  comp: 'salade',              emoji: '🥬', desc: "Les yeux s'ouvrent enfin et Curtis cligne des paupières. Il distingue maintenant l'obscurité de la lumière." },
+      { w: 27, taille: 36.6, poids: 875,  comp: 'aubergine',           emoji: '🍆', desc: "Début du troisième trimestre. Curtis a un cycle veille-sommeil. Tu sens peut-être ses hoquets, comme de petits soubresauts rythmés." },
+      { w: 28, taille: 37.6, poids: 1000, comp: 'noix de coco',        emoji: '🥥', desc: "Curtis pèse maintenant 1 kg ! Le cerveau se complexifie rapidement et forme de nouvelles connexions chaque seconde." },
+      { w: 29, taille: 38.6, poids: 1150, comp: 'courge butternut',    emoji: '🎃', desc: "Les os sont entièrement formés mais encore souples. Curtis prend du poids et de la graisse pour réguler sa température." },
+      { w: 30, taille: 39.9, poids: 1300, comp: 'chou',                emoji: '🥬', desc: "Le lanugo (duvet) commence à disparaître. Les cheveux poussent et Curtis voit mieux la lumière qui filtre." },
+      { w: 31, taille: 41.1, poids: 1500, comp: 'ananas',              emoji: '🍍', desc: "Curtis bouge beaucoup mais l'espace devient plus restreint. Tu peux sentir distinctement ses pieds et ses coudes." },
+      { w: 32, taille: 42.4, poids: 1700, comp: 'courge',              emoji: '🎃', desc: "Curtis se positionne souvent tête en bas en prévision de l'accouchement. Les ongles atteignent le bout des doigts." },
+      { w: 33, taille: 43.7, poids: 1900, comp: 'melon',               emoji: '🍈', desc: "Le système immunitaire se renforce grâce aux anticorps que tu transmets. La peau devient lisse et rosée." },
+      { w: 34, taille: 45,   poids: 2100, comp: 'cantaloup',           emoji: '🍈', desc: "Les poumons se préparent à respirer de l'air. Curtis entend tout très clairement maintenant." },
+      { w: 35, taille: 46.2, poids: 2400, comp: 'laitue romaine',      emoji: '🥬', desc: "Curtis prend environ 200 g par semaine. Les reins fonctionnent et le foie traite déjà certains déchets." },
+      { w: 36, taille: 47.4, poids: 2600, comp: 'papaye',              emoji: '🥭', desc: "Curtis est considéré « presque à terme ». Il continue de prendre du poids et de la graisse pour se préparer à la vie extérieure." },
+      { w: 37, taille: 48.6, poids: 2850, comp: 'bette',               emoji: '🌿', desc: "Curtis est considéré comme à terme ! Il pourrait naître à tout moment et serait parfaitement viable." },
+      { w: 38, taille: 49.8, poids: 3000, comp: 'poireau',             emoji: '🌱', desc: "La plupart du vernix et du lanugo a disparu. Curtis est prêt, on attend juste son moment." },
+      { w: 39, taille: 50.7, poids: 3300, comp: 'pastèque',            emoji: '🍉', desc: "Curtis est pleinement développé. Ses ongles peuvent dépasser le bout des doigts et ses poumons sont matures." },
+      { w: 40, taille: 51.2, poids: 3500, comp: 'citrouille',          emoji: '🎃', desc: "Terme atteint ! Curtis peut arriver d'un jour à l'autre. Tu vas bientôt rencontrer ce petit être que tu portes depuis 9 mois." }
+    ];
+
+    /* ==========================================================
+       FOOD DATABASE — base étoffée (~150 aliments)
+       statut : ok | attention | interdit
+       ========================================================== */
+    const FOODS = [
+      // ===== VIANDES =====
+      { id: 'steak-bien-cuit',    nom: 'Steak bien cuit',           cat: 'Viandes',     statut: 'ok',        explication: "Une viande bien cuite à cœur (>70°C) élimine les parasites et bactéries comme la toxoplasmose et la listeria.", alt: null },
+      { id: 'steak-saignant',     nom: 'Steak saignant ou bleu',    cat: 'Viandes',     statut: 'interdit',  explication: "Risque de toxoplasmose si tu n'es pas immunisée. La viande peu cuite peut héberger le parasite Toxoplasma gondii.", alt: 'Demande une cuisson « à point » ou bien cuite (>70°C à cœur).' },
+      { id: 'tartare',            nom: 'Tartare de bœuf',           cat: 'Viandes',     statut: 'interdit',  explication: "Viande totalement crue : risque élevé de toxoplasmose, salmonellose, E. coli.", alt: 'Reporte cette envie après la grossesse.' },
+      { id: 'carpaccio',          nom: 'Carpaccio',                 cat: 'Viandes',     statut: 'interdit',  explication: "Viande crue : mêmes risques que le tartare.", alt: 'Carpaccio de saumon cuit ou de légumes.' },
+      { id: 'foie',               nom: 'Foie (de veau, volaille…)', cat: 'Viandes',     statut: 'attention', explication: "Très riche en vitamine A : un excès peut être tératogène (malformations). Une portion occasionnelle reste tolérée.", alt: 'Limite à une portion par mois, ou évite par précaution.' },
+      { id: 'volaille-cuite',     nom: 'Volaille bien cuite',       cat: 'Viandes',     statut: 'ok',        explication: "Poulet, dinde et autres volailles bien cuits ne posent aucun problème.", alt: null },
+      { id: 'volaille-rosee',     nom: 'Volaille rosée',            cat: 'Viandes',     statut: 'interdit',  explication: "Risque de salmonellose et campylobacter. La volaille doit toujours être cuite à cœur.", alt: 'Volaille bien cuite (chair blanche, jus clair).' },
+      { id: 'gibier',             nom: 'Gibier',                    cat: 'Viandes',     statut: 'attention', explication: "Risque de plomb (provenant des munitions) qui peut affecter le développement neurologique. Limite la consommation.", alt: 'Évite ou consomme très occasionnellement, bien cuit.' },
+      { id: 'agneau-cuit',        nom: 'Agneau bien cuit',          cat: 'Viandes',     statut: 'ok',        explication: "Bien cuit, l'agneau ne pose aucun problème.", alt: null },
+      { id: 'agneau-rose',        nom: 'Agneau rosé / saignant',    cat: 'Viandes',     statut: 'interdit',  explication: "Risque de toxoplasmose, l'agneau étant un porteur fréquent.", alt: 'Demande une cuisson « bien cuite ».' },
+      { id: 'porc-cuit',          nom: 'Porc bien cuit',            cat: 'Viandes',     statut: 'ok',        explication: "Bien cuit, le porc est sûr.", alt: null },
+      { id: 'porc-cru',           nom: 'Porc cru ou peu cuit',      cat: 'Viandes',     statut: 'interdit',  explication: "Risque de trichinose et de toxoplasmose.", alt: 'Cuisson à cœur >70°C.' },
+      { id: 'merguez-cuite',      nom: 'Merguez bien cuite',        cat: 'Viandes',     statut: 'ok',        explication: "Bien cuite, sans souci.", alt: null },
+      { id: 'rognons',            nom: 'Rognons',                   cat: 'Viandes',     statut: 'attention', explication: "Comme tous les abats, riches en vitamine A. À limiter.", alt: 'Une portion occasionnelle bien cuite.' },
+      { id: 'andouillette',       nom: 'Andouillette',              cat: 'Viandes',     statut: 'attention', explication: "À base d'abats : à consommer bien cuite et avec modération.", alt: 'Saucisse ou boudin bien cuits.' },
+
+      // ===== POISSONS & FRUITS DE MER =====
+      { id: 'poisson-cuit',       nom: 'Poisson blanc bien cuit',   cat: 'Poissons',    statut: 'ok',        explication: "Cabillaud, colin, sole, lieu, merlan… Bien cuits, ils sont une excellente source d'oméga-3 et de protéines.", alt: null },
+      { id: 'sushi',              nom: 'Sushi (poisson cru)',       cat: 'Poissons',    statut: 'interdit',  explication: "Risque d'anisakiase (parasite), listeria et autres bactéries. Le poisson cru ou fumé est à éviter.", alt: 'Sushi végétarien (avocat, concombre) ou avec poisson cuit (omelette, crevette cuite).' },
+      { id: 'sashimi',            nom: 'Sashimi',                   cat: 'Poissons',    statut: 'interdit',  explication: "Poisson totalement cru : risque parasitaire et bactérien.", alt: 'Tataki (à peine saisi) reste cru, donc à éviter aussi. Privilégie le poisson cuit.' },
+      { id: 'ceviche',            nom: 'Ceviche',                   cat: 'Poissons',    statut: 'interdit',  explication: "La marinade au citron ne tue pas tous les parasites et bactéries.", alt: 'Poisson cuit avec une sauce vierge.' },
+      { id: 'poisson-cru',        nom: 'Poisson cru',               cat: 'Poissons',    statut: 'interdit',  explication: "Sashimi, ceviche, tartare de poisson : risques bactériens et parasitaires.", alt: 'Privilégie les poissons cuits.' },
+      { id: 'saumon-fume',        nom: 'Saumon fumé',               cat: 'Poissons',    statut: 'interdit',  explication: "Risque de listeria, qui peut traverser le placenta et provoquer des complications graves.", alt: 'Saumon cuit au four ou à la vapeur.' },
+      { id: 'truite-fumee',       nom: 'Truite fumée',              cat: 'Poissons',    statut: 'interdit',  explication: "Comme tous les poissons fumés à froid : risque de listeria.", alt: 'Truite cuite.' },
+      { id: 'maquereau-fume',     nom: 'Maquereau fumé',            cat: 'Poissons',    statut: 'interdit',  explication: "Fumage à froid : risque de listeria.", alt: 'Maquereau frais cuit ou en boîte.' },
+      { id: 'hareng-fume',        nom: 'Hareng fumé / mariné',      cat: 'Poissons',    statut: 'interdit',  explication: "Risque de listeria.", alt: 'Hareng cuit.' },
+      { id: 'thon-rouge',         nom: 'Thon rouge, espadon, requin, marlin', cat: 'Poissons', statut: 'interdit', explication: "Poissons prédateurs en haut de la chaîne alimentaire, fortement contaminés au mercure (toxique pour le système nerveux du fœtus).", alt: 'Privilégie les petits poissons : sardines, maquereau, anchois, colin.' },
+      { id: 'thon-boite',         nom: 'Thon en boîte',             cat: 'Poissons',    statut: 'attention', explication: "Contient du mercure mais en moindre quantité. Limite à 1 à 2 portions par semaine.", alt: 'Sardines ou maquereau en boîte.' },
+      { id: 'crevettes-cuites',   nom: 'Crevettes cuites',          cat: 'Poissons',    statut: 'ok',        explication: "Bien cuites, les crevettes sont sûres et riches en protéines.", alt: null },
+      { id: 'crevettes-crues',    nom: 'Crevettes crues',           cat: 'Poissons',    statut: 'interdit',  explication: "Risque bactérien.", alt: 'Crevettes bien cuites.' },
+      { id: 'huitres',            nom: 'Huîtres crues',             cat: 'Poissons',    statut: 'interdit',  explication: "Mollusques crus : risques de listeria, norovirus, et autres bactéries.", alt: 'Huîtres cuites (gratinées par exemple).' },
+      { id: 'coquillages-crus',   nom: 'Coquillages crus',          cat: 'Poissons',    statut: 'interdit',  explication: "Moules, palourdes ou coquilles Saint-Jacques crues : risque bactérien important.", alt: 'Bien cuits (moules marinières par ex.).' },
+      { id: 'moules-cuites',      nom: 'Moules bien cuites',        cat: 'Poissons',    statut: 'ok',        explication: "Bien cuites (toutes les coquilles ouvertes), sans risque.", alt: null },
+      { id: 'st-jacques-cuites',  nom: 'Coquilles St-Jacques cuites', cat: 'Poissons',  statut: 'ok',        explication: "Bien saisies à cœur, sans souci.", alt: null },
+      { id: 'crabe-cuit',         nom: 'Crabe cuit',                cat: 'Poissons',    statut: 'ok',        explication: "Bien cuit, sans risque.", alt: null },
+      { id: 'homard-cuit',        nom: 'Homard / langouste cuits',  cat: 'Poissons',    statut: 'ok',        explication: "Bien cuits à cœur, ils sont sûrs.", alt: null },
+      { id: 'surimi',             nom: 'Surimi',                    cat: 'Poissons',    statut: 'attention', explication: "Industriel : risque résiduel de listeria. Choisis un produit emballé sous vide à conservation courte.", alt: 'Évite si tu peux, ou vérifie la fraîcheur.' },
+      { id: 'tarama',             nom: 'Tarama',                    cat: 'Poissons',    statut: 'interdit',  explication: "Préparation à base d'œufs de poisson non cuits : risque de listeria.", alt: 'Tartinades à base d\'avocat ou de légumes cuits.' },
+      { id: 'oeufs-poisson',      nom: 'Œufs de poisson, caviar',   cat: 'Poissons',    statut: 'interdit',  explication: "Crus, ils peuvent contenir listeria et bactéries.", alt: 'Évite pendant la grossesse.' },
+      { id: 'sardines',           nom: 'Sardines',                  cat: 'Poissons',    statut: 'ok',        explication: "Petit poisson peu contaminé au mercure, riche en oméga-3 et calcium. À consommer sans souci.", alt: null },
+      { id: 'anchois-frais',      nom: 'Anchois frais cuits',       cat: 'Poissons',    statut: 'ok',        explication: "Cuits, sans souci. Riches en oméga-3.", alt: null },
+      { id: 'anchois-marines',    nom: 'Anchois marinés',           cat: 'Poissons',    statut: 'attention', explication: "Marinade au sel/vinaigre : risque résiduel selon la fabrication. Préfère des conserves stérilisées.", alt: 'Anchois en conserve à l\'huile.' },
+
+      // ===== FROMAGES =====
+      { id: 'lait-cru',           nom: 'Fromage au lait cru',       cat: 'Fromages',    statut: 'interdit',  explication: "Le lait non pasteurisé peut contenir de la listeria. Vérifie l'étiquette : « lait cru » ou « lait thermisé ».", alt: 'Mêmes fromages au lait pasteurisé.' },
+      { id: 'camembert',          nom: 'Camembert (lait pasteurisé)', cat: 'Fromages',  statut: 'attention', explication: "La pâte est sûre si pasteurisée, mais retire la croûte : c'est là que la listeria peut se développer.", alt: 'Consomme la pâte uniquement, sans la croûte.' },
+      { id: 'brie',               nom: 'Brie (lait pasteurisé)',    cat: 'Fromages',    statut: 'attention', explication: "Idem camembert : retire la croûte par précaution.", alt: 'Sans la croûte, ou choisis un fromage à pâte dure.' },
+      { id: 'coulommiers',        nom: 'Coulommiers',               cat: 'Fromages',    statut: 'attention', explication: "Pâte molle à croûte fleurie : retire la croûte si pasteurisé, sinon évite.", alt: 'Sans la croûte si pasteurisé.' },
+      { id: 'munster',            nom: 'Munster',                   cat: 'Fromages',    statut: 'interdit',  explication: "Pâte molle à croûte lavée, souvent au lait cru : risque élevé de listeria.", alt: 'Fromages à pâte pressée cuite.' },
+      { id: 'reblochon',          nom: 'Reblochon',                 cat: 'Fromages',    statut: 'interdit',  explication: "Quasiment toujours au lait cru.", alt: 'Tartiflette : la cuisson au four à >70°C la rend sûre.' },
+      { id: 'roquefort',          nom: 'Roquefort',                 cat: 'Fromages',    statut: 'interdit',  explication: "Fromage à pâte persillée au lait cru : risque de listeria.", alt: 'Fromages bleus pasteurisés (rare) ou évite.' },
+      { id: 'bleu-auvergne',      nom: "Bleu d'Auvergne, Fourme",   cat: 'Fromages',    statut: 'interdit',  explication: "Pâtes persillées au lait cru le plus souvent.", alt: 'Fromage de chèvre pasteurisé.' },
+      { id: 'gorgonzola',         nom: 'Gorgonzola',                cat: 'Fromages',    statut: 'interdit',  explication: "Pâte persillée souvent au lait cru.", alt: 'Évite ou vérifie l\'étiquette pasteurisé.' },
+      { id: 'comte',              nom: 'Comté',                     cat: 'Fromages',    statut: 'ok',        explication: "Pâte pressée cuite : la chaleur de fabrication élimine la listeria, même au lait cru. Sûr.", alt: null },
+      { id: 'beaufort',           nom: 'Beaufort',                  cat: 'Fromages',    statut: 'ok',        explication: "Pâte pressée cuite, sûre même au lait cru.", alt: null },
+      { id: 'emmental',           nom: 'Emmental, gruyère',         cat: 'Fromages',    statut: 'ok',        explication: "Pâtes pressées cuites, sûres pendant la grossesse.", alt: null },
+      { id: 'parmesan',           nom: 'Parmesan',                  cat: 'Fromages',    statut: 'ok',        explication: "Pâte dure, longuement affinée : sans risque.", alt: null },
+      { id: 'pecorino',           nom: 'Pecorino',                  cat: 'Fromages',    statut: 'ok',        explication: "Pâte dure affinée : sûre.", alt: null },
+      { id: 'cheddar',            nom: 'Cheddar',                   cat: 'Fromages',    statut: 'ok',        explication: "Pâte dure pasteurisée : sûr.", alt: null },
+      { id: 'mozzarella',         nom: 'Mozzarella pasteurisée',    cat: 'Fromages',    statut: 'ok',        explication: "Vérifie l'étiquette : si pasteurisée, c'est sûr.", alt: null },
+      { id: 'burrata',            nom: 'Burrata pasteurisée',       cat: 'Fromages',    statut: 'ok',        explication: "Pasteurisée, sans souci.", alt: null },
+      { id: 'feta',               nom: 'Feta pasteurisée',          cat: 'Fromages',    statut: 'ok',        explication: "Si pasteurisée (la majorité du commerce), aucun problème.", alt: null },
+      { id: 'fromage-frais',      nom: 'Fromage frais (St Môret, Philadelphia)', cat: 'Fromages', statut: 'ok', explication: "Pasteurisés, pas de risque.", alt: null },
+      { id: 'ricotta',            nom: 'Ricotta',                   cat: 'Fromages',    statut: 'ok',        explication: "Issue de lait pasteurisé chauffé : sûre.", alt: null },
+      { id: 'mascarpone',         nom: 'Mascarpone',                cat: 'Fromages',    statut: 'ok',        explication: "Pasteurisé, sans souci.", alt: null },
+      { id: 'chevre-frais',       nom: 'Chèvre frais (lait cru)',   cat: 'Fromages',    statut: 'interdit',  explication: "Beaucoup de chèvres frais sont au lait cru : vérifie l'étiquette.", alt: 'Chèvre pasteurisé (bûche industrielle).' },
+      { id: 'chevre-pasteurise',  nom: 'Chèvre pasteurisé',         cat: 'Fromages',    statut: 'ok',        explication: "Pasteurisé, sans risque.", alt: null },
+      { id: 'raclette',           nom: 'Raclette',                  cat: 'Fromages',    statut: 'attention', explication: "Souvent au lait cru. Si fondu correctement (>70°C), le risque est éliminé.", alt: 'Bien faire fondre la raclette, ou choisis du pasteurisé.' },
+      { id: 'fondue',             nom: 'Fondue savoyarde',          cat: 'Fromages',    statut: 'ok',        explication: "Cuisson prolongée à haute température : la listeria est détruite.", alt: null },
+
+      // ===== ŒUFS =====
+      { id: 'oeufs-cuits',        nom: 'Œufs bien cuits',           cat: 'Œufs',        statut: 'ok',        explication: "Jaune et blanc bien cuits éliminent le risque de salmonelle.", alt: null },
+      { id: 'oeufs-crus',         nom: 'Œufs crus',                 cat: 'Œufs',        statut: 'interdit',  explication: "Risque de salmonellose. Évite tout ce qui contient des œufs non cuits.", alt: 'Œufs bien cuits ou produits pasteurisés.' },
+      { id: 'oeuf-coque',         nom: 'Œuf à la coque',            cat: 'Œufs',        statut: 'attention', explication: "Le jaune coulant peut encore contenir de la salmonelle. À éviter par précaution.", alt: 'Œuf dur ou très cuit.' },
+      { id: 'oeuf-mollet',        nom: 'Œuf mollet, œuf poché',     cat: 'Œufs',        statut: 'attention', explication: "Jaune encore liquide : risque résiduel de salmonelle.", alt: 'Œuf dur, omelette bien cuite.' },
+      { id: 'oeuf-au-plat',       nom: 'Œuf au plat',               cat: 'Œufs',        statut: 'attention', explication: "Si le jaune est cuit (pas coulant), c'est OK. Sinon, risque résiduel.", alt: 'Bien cuire le jaune (œuf retourné).' },
+      { id: 'omelette',           nom: 'Omelette bien cuite',       cat: 'Œufs',        statut: 'ok',        explication: "Si cuite à cœur, sans risque.", alt: null },
+      { id: 'mayo-maison',        nom: 'Mayonnaise maison',         cat: 'Œufs',        statut: 'interdit',  explication: "Contient des œufs crus : risque de salmonellose.", alt: 'Mayonnaise industrielle (œufs pasteurisés).' },
+      { id: 'mayo-industrielle',  nom: 'Mayonnaise industrielle',   cat: 'Œufs',        statut: 'ok',        explication: "Œufs pasteurisés : sans risque.", alt: null },
+      { id: 'mousse-chocolat',    nom: 'Mousse au chocolat maison', cat: 'Œufs',        statut: 'interdit',  explication: "Contient des œufs crus battus.", alt: 'Mousse industrielle ou recette sans œufs crus.' },
+      { id: 'tiramisu',           nom: 'Tiramisu',                  cat: 'Œufs',        statut: 'interdit',  explication: "Contient des œufs crus dans le mascarpone.", alt: 'Recettes sans œufs crus, ou évite.' },
+      { id: 'cookie-pate-crue',   nom: 'Pâte à cookies crue',       cat: 'Œufs',        statut: 'interdit',  explication: "Œufs crus + farine crue (risque E. coli).", alt: 'Cookies cuits.' },
+      { id: 'sabayon',            nom: 'Sabayon',                   cat: 'Œufs',        statut: 'attention', explication: "Œufs faiblement cuits : à éviter sauf si bien chauffé (>70°C).", alt: 'Crème anglaise bien cuite.' },
+
+      // ===== CHARCUTERIE =====
+      { id: 'pate',               nom: 'Pâté, rillettes',           cat: 'Charcuterie', statut: 'interdit',  explication: "Risque élevé de listeria dans tous les produits de charcuterie en gelée ou non stérilisés.", alt: 'Houmous, tartinades végétales, terrines maison cuites.' },
+      { id: 'foie-gras',          nom: 'Foie gras',                 cat: 'Charcuterie', statut: 'interdit',  explication: "Mêmes risques que les pâtés, plus la richesse en vitamine A.", alt: 'Foie gras en bocal stérilisé (lire l\'étiquette), ou évite.' },
+      { id: 'jambon-cru',         nom: 'Jambon cru, prosciutto',    cat: 'Charcuterie', statut: 'interdit',  explication: "Viande crue séchée : risque de toxoplasmose et listeria.", alt: 'Jambon blanc cuit.' },
+      { id: 'serrano',            nom: 'Jambon serrano, ibérique',  cat: 'Charcuterie', statut: 'interdit',  explication: "Mêmes risques que le jambon cru.", alt: 'Jambon blanc.' },
+      { id: 'saucisson',          nom: 'Saucisson sec',             cat: 'Charcuterie', statut: 'interdit',  explication: "Viande crue séchée : risque de toxoplasmose.", alt: 'Saucisses bien cuites.' },
+      { id: 'chorizo',            nom: 'Chorizo cru',               cat: 'Charcuterie', statut: 'interdit',  explication: "Viande séchée crue : à éviter.", alt: 'Chorizo cuit dans un plat (paella par ex.).' },
+      { id: 'jambon-blanc',       nom: 'Jambon blanc (cuit)',       cat: 'Charcuterie', statut: 'attention', explication: "Cuit, mais reste un produit de charcuterie : limite la consommation et choisis-le sans nitrites de préférence.", alt: 'Choisis sans nitrites, et limite à de petites quantités.' },
+      { id: 'bacon-cuit',         nom: 'Bacon bien cuit',           cat: 'Charcuterie', statut: 'ok',        explication: "Bien cuit, le bacon ne pose pas de problème particulier (mais reste salé).", alt: null },
+      { id: 'lardons-cuits',      nom: 'Lardons bien cuits',        cat: 'Charcuterie', statut: 'ok',        explication: "Bien revenus à la poêle, ils sont sûrs.", alt: null },
+      { id: 'mortadelle',         nom: 'Mortadelle',                cat: 'Charcuterie', statut: 'attention', explication: "Cuite, mais risque listeria à la coupe. Préfère sous vide industriel.", alt: 'Sous vide longue conservation, à consommer rapidement.' },
+      { id: 'saucisses-cuites',   nom: 'Saucisses bien cuites',     cat: 'Charcuterie', statut: 'ok',        explication: "Bien cuites à cœur, sûres.", alt: null },
+      { id: 'boudin-noir-cuit',   nom: 'Boudin noir bien cuit',     cat: 'Charcuterie', statut: 'ok',        explication: "Cuit, riche en fer.", alt: null },
+
+      // ===== BOISSONS ALCOOLISÉES =====
+      { id: 'alcool',             nom: 'Alcool (toutes formes)',    cat: 'Alcool',      statut: 'interdit',  explication: "Aucune dose n'est sans risque pour Curtis. L'alcool traverse le placenta et peut causer un syndrome d'alcoolisation fœtale.", alt: 'Mocktails, jus, eaux pétillantes aromatisées.' },
+      { id: 'vin',                nom: 'Vin, champagne',            cat: 'Alcool',      statut: 'interdit',  explication: "Aucune dose sûre. Même un verre occasionnel est déconseillé.", alt: 'Pétillant sans alcool, kombucha sans alcool.' },
+      { id: 'biere',              nom: 'Bière',                     cat: 'Alcool',      statut: 'interdit',  explication: "Contient de l'alcool, à éviter totalement.", alt: 'Bière sans alcool (vérifie qu\'elle soit bien à 0,0%).' },
+      { id: 'biere-sans-alcool',  nom: 'Bière sans alcool (0,0%)',  cat: 'Alcool',      statut: 'ok',        explication: "Une vraie 0,0% est sûre. Méfie-toi des « sans alcool » à 0,5% qui contiennent encore un peu d'alcool.", alt: null },
+      { id: 'cocktail',           nom: 'Cocktails alcoolisés',      cat: 'Alcool',      statut: 'interdit',  explication: "À éviter totalement.", alt: 'Mocktails (versions sans alcool).' },
+      { id: 'rhum-arrange',       nom: 'Rhum arrangé, liqueurs',    cat: 'Alcool',      statut: 'interdit',  explication: "Concentration d'alcool élevée.", alt: 'Sirops de fruits dans une boisson sans alcool.' },
+      { id: 'plat-flambe',        nom: 'Plat flambé / déglacé au vin', cat: 'Alcool',   statut: 'attention', explication: "La cuisson prolongée évapore la majeure partie de l'alcool, mais pas tout. À éviter pour les plats peu cuits.", alt: 'Déglacer au bouillon plutôt qu\'au vin.' },
+
+      // ===== CAFÉ, THÉ =====
+      { id: 'cafe',               nom: 'Café',                      cat: 'Boissons chaudes', statut: 'attention', explication: "La caféine traverse le placenta. Limite à 200 mg/jour (≈ 2 expressos).", alt: 'Décaféiné, chicorée, infusions autorisées.' },
+      { id: 'cafe-decafeine',     nom: 'Café décaféiné',            cat: 'Boissons chaudes', statut: 'ok',        explication: "Décaféiné, sans risque.", alt: null },
+      { id: 'cafe-soluble',       nom: 'Café soluble',              cat: 'Boissons chaudes', statut: 'attention', explication: "Contient de la caféine. Compte dans ta limite quotidienne.", alt: 'Décaféiné soluble.' },
+      { id: 'the',                nom: 'Thé noir, thé vert',        cat: 'Boissons chaudes', statut: 'attention', explication: "Contient de la caféine et peut limiter l'absorption du fer. Modère la consommation, surtout aux repas.", alt: 'Rooibos (sans caféine), infusions douces.' },
+      { id: 'the-matcha',         nom: 'Matcha',                    cat: 'Boissons chaudes', statut: 'attention', explication: "Très concentré en caféine et théine. Limite fortement.", alt: 'Rooibos, infusions douces.' },
+      { id: 'chocolat-chaud',     nom: 'Chocolat chaud',            cat: 'Boissons chaudes', statut: 'ok',        explication: "Contient un peu de caféine via le cacao, mais à dose raisonnable c'est sûr.", alt: null },
+      { id: 'rooibos',            nom: 'Rooibos',                   cat: 'Boissons chaudes', statut: 'ok',        explication: "Sans caféine, autorisé sans souci.", alt: null },
+      { id: 'chicoree',           nom: 'Chicorée',                  cat: 'Boissons chaudes', statut: 'ok',        explication: "Sans caféine, alternative au café.", alt: null },
+
+      // ===== TISANES =====
+      { id: 'tisanes-deconseillees', nom: 'Tisanes interdites (sauge, réglisse, fenouil…)', cat: 'Tisanes', statut: 'interdit', explication: "Sauge, réglisse, fenouil, anis, ginseng, romarin à fortes doses : effets hormonaux ou utérins possibles.", alt: 'Verveine, tilleul, camomille douce (à doses raisonnables).' },
+      { id: 'tisane-verveine',    nom: 'Verveine',                  cat: 'Tisanes',     statut: 'ok',        explication: "Tisane douce, sans contre-indication.", alt: null },
+      { id: 'tisane-tilleul',     nom: 'Tilleul',                   cat: 'Tisanes',     statut: 'ok',        explication: "Apaisant, sans risque.", alt: null },
+      { id: 'tisane-camomille',   nom: 'Camomille',                 cat: 'Tisanes',     statut: 'attention', explication: "Tolérée à doses raisonnables (1-2 tasses/jour). À éviter en grandes quantités au 1er trimestre.", alt: 'Verveine, tilleul.' },
+      { id: 'tisane-menthe',      nom: 'Menthe poivrée',            cat: 'Tisanes',     statut: 'attention', explication: "À éviter en grandes quantités. Une tasse occasionnelle est OK.", alt: 'Verveine, tilleul.' },
+      { id: 'tisane-gingembre',   nom: 'Gingembre',                 cat: 'Tisanes',     statut: 'attention', explication: "À petites doses, peut aider contre les nausées. À éviter en grandes quantités.", alt: 'Demande à ta sage-femme.' },
+      { id: 'tisane-sauge',       nom: 'Sauge',                     cat: 'Tisanes',     statut: 'interdit',  explication: "Effet abortif possible. À proscrire pendant toute la grossesse.", alt: 'Verveine, tilleul.' },
+      { id: 'tisane-reglisse',    nom: 'Réglisse',                  cat: 'Tisanes',     statut: 'interdit',  explication: "Augmente la tension et risque d'œdèmes. À proscrire.", alt: 'Verveine, tilleul.' },
+      { id: 'tisane-anis',        nom: 'Anis étoilé, fenouil',      cat: 'Tisanes',     statut: 'interdit',  explication: "Effets hormonaux et utérins possibles.", alt: 'Verveine, tilleul.' },
+      { id: 'tisane-framboisier', nom: 'Feuilles de framboisier',   cat: 'Tisanes',     statut: 'attention', explication: "Réservée au 3e trimestre uniquement, sur conseil de la sage-femme (prépare l'utérus).", alt: 'Demande à ta sage-femme.' },
+
+      // ===== BOISSONS FROIDES =====
+      { id: 'eau',                nom: 'Eau',                       cat: 'Boissons',    statut: 'ok',        explication: "Évidemment ! 1,5 à 2 L par jour recommandés.", alt: null },
+      { id: 'eau-gazeuse',        nom: 'Eau gazeuse',               cat: 'Boissons',    statut: 'ok',        explication: "Aucun problème, surveille juste l'apport en sodium si tu retiens l'eau.", alt: null },
+      { id: 'jus-frais',          nom: 'Jus de fruits frais (maison)', cat: 'Boissons', statut: 'attention', explication: "Sûrs si les fruits sont bien lavés. Riches en sucres rapides.", alt: 'Privilégie les fruits entiers ou pasteurisés.' },
+      { id: 'jus-pasteurise',     nom: 'Jus de fruits pasteurisé',  cat: 'Boissons',    statut: 'ok',        explication: "Sans risque sanitaire mais riche en sucres : à modérer.", alt: null },
+      { id: 'soda',               nom: 'Sodas (Coca, etc.)',        cat: 'Boissons',    statut: 'attention', explication: "Très sucrés, parfois caféinés (Coca, Pepsi). À limiter fortement.", alt: 'Eau pétillante avec du citron.' },
+      { id: 'soda-light',         nom: 'Sodas light / zero',        cat: 'Boissons',    statut: 'attention', explication: "Édulcorants à consommer modérément. Souvent caféinés aussi.", alt: 'Eau pétillante aromatisée maison.' },
+      { id: 'energisant',         nom: 'Boissons énergisantes',     cat: 'Boissons',    statut: 'interdit',  explication: "Très riches en caféine, taurine, sucre, additifs. Déconseillées formellement.", alt: 'Eau, jus dilué.' },
+      { id: 'kombucha',           nom: 'Kombucha',                  cat: 'Boissons',    statut: 'attention', explication: "Boisson fermentée pouvant contenir un peu d'alcool et des bactéries non maîtrisées.", alt: 'Évite ou choisis une version pasteurisée et certifiée sans alcool.' },
+      { id: 'smoothie',           nom: 'Smoothies maison',          cat: 'Boissons',    statut: 'attention', explication: "Sûrs si fruits/légumes bien lavés. Riches en sucres si beaucoup de fruits.", alt: 'Bien laver les ingrédients.' },
+      { id: 'lait-amande',        nom: 'Lait d\'amande / avoine',   cat: 'Boissons',    statut: 'ok',        explication: "Pasteurisés (UHT), sans risque.", alt: null },
+      { id: 'lait-soja',          nom: 'Lait de soja',              cat: 'Boissons',    statut: 'attention', explication: "Phytoestrogènes : limite à 1 portion/jour.", alt: 'Lait de vache pasteurisé ou autres laits végétaux.' },
+
+      // ===== PRODUITS LAITIERS =====
+      { id: 'lait-pasteurise',    nom: 'Lait pasteurisé / UHT',     cat: 'Produits laitiers', statut: 'ok',  explication: "Sans aucun risque, riche en calcium nécessaire à la grossesse.", alt: null },
+      { id: 'lait-cru-boisson',   nom: 'Lait cru',                  cat: 'Produits laitiers', statut: 'interdit', explication: "Risque de listeria, salmonelle, E. coli.", alt: 'Lait pasteurisé ou UHT.' },
+      { id: 'yaourt',             nom: 'Yaourt nature',             cat: 'Produits laitiers', statut: 'ok',  explication: "Tous les yaourts industriels sont faits avec du lait pasteurisé.", alt: null },
+      { id: 'yaourt-grec',        nom: 'Yaourt grec',               cat: 'Produits laitiers', statut: 'ok',  explication: "Pasteurisé, sans risque.", alt: null },
+      { id: 'kefir-lait',         nom: 'Kéfir de lait',             cat: 'Produits laitiers', statut: 'attention', explication: "Lait fermenté : si pasteurisé à la base, OK. Sinon évite.", alt: 'Yaourt classique.' },
+      { id: 'glace-industrielle', nom: 'Glace industrielle',        cat: 'Produits laitiers', statut: 'ok',  explication: "Œufs et lait pasteurisés, sans risque.", alt: null },
+      { id: 'glace-artisanale',   nom: 'Glace artisanale',          cat: 'Produits laitiers', statut: 'attention', explication: "Peut contenir des œufs crus. Vérifie auprès du glacier ou évite.", alt: 'Glaces industrielles, sorbets aux fruits.' },
+      { id: 'sorbet',             nom: 'Sorbet aux fruits',         cat: 'Produits laitiers', statut: 'ok',  explication: "Sans œufs ni produits laitiers, sans risque.", alt: null },
+      { id: 'creme-fraiche',      nom: 'Crème fraîche pasteurisée', cat: 'Produits laitiers', statut: 'ok',  explication: "Pasteurisée, sans souci.", alt: null },
+      { id: 'beurre',             nom: 'Beurre',                    cat: 'Produits laitiers', statut: 'ok',  explication: "Quasi-toujours pasteurisé en France.", alt: null },
+      { id: 'beurre-cru',         nom: 'Beurre cru',                cat: 'Produits laitiers', statut: 'interdit', explication: "Beurre fermier au lait cru : risque de listeria.", alt: 'Beurre pasteurisé.' },
+
+      // ===== FRUITS =====
+      { id: 'fruits-laves',       nom: 'Fruits frais bien lavés',   cat: 'Fruits',      statut: 'ok',        explication: "Bien lavés (eau + un peu de vinaigre blanc), ils sont essentiels à ton alimentation.", alt: null },
+      { id: 'fruits-non-laves',   nom: 'Fruits non lavés',          cat: 'Fruits',      statut: 'interdit',  explication: "Risque de toxoplasmose (terre) et de pesticides.", alt: 'Lave abondamment.' },
+      { id: 'fruits-rouges',      nom: 'Fruits rouges (fraises, framboises)', cat: 'Fruits', statut: 'attention', explication: "Risque de toxoplasmose s'ils ont été en contact avec la terre. Lave très soigneusement.", alt: 'Bien laver à l\'eau vinaigrée.' },
+      { id: 'fruits-secs',        nom: 'Fruits secs (amandes, noix…)', cat: 'Fruits',   statut: 'ok',        explication: "Sans risque, riches en bons acides gras et oligo-éléments.", alt: null },
+      { id: 'fruits-confits',     nom: 'Fruits confits / secs sucrés', cat: 'Fruits',   statut: 'ok',        explication: "Sans risque sanitaire, mais riches en sucres.", alt: null },
+      { id: 'ananas',             nom: 'Ananas frais',              cat: 'Fruits',      statut: 'ok',        explication: "La rumeur sur la bromélaïne abortive est infondée à doses alimentaires.", alt: null },
+      { id: 'papaye-verte',       nom: 'Papaye verte (pas mûre)',   cat: 'Fruits',      statut: 'attention', explication: "Le latex de la papaye non mûre peut contracter l'utérus. La papaye mûre est sûre.", alt: 'Papaye bien mûre uniquement.' },
+
+      // ===== LÉGUMES =====
+      { id: 'legumes-cuits',      nom: 'Légumes cuits',             cat: 'Légumes',     statut: 'ok',        explication: "Pas de souci, et la cuisson élimine les risques.", alt: null },
+      { id: 'crudites-non-lavees',nom: 'Crudités non lavées',       cat: 'Légumes',     statut: 'interdit',  explication: "Risque de toxoplasmose (terre) et de pesticides.", alt: 'Lave abondamment ou cuis légèrement.' },
+      { id: 'crudites-lavees',    nom: 'Crudités bien lavées',      cat: 'Légumes',     statut: 'ok',        explication: "Bien lavées à l'eau vinaigrée, elles sont sûres.", alt: null },
+      { id: 'salade-preparee',    nom: 'Salade en sachet',          cat: 'Légumes',     statut: 'attention', explication: "Risque de listeria même si lavée en usine. Lave une nouvelle fois avant consommation.", alt: 'Salade fraîche que tu laves toi-même.' },
+      { id: 'germes-crus',        nom: 'Graines germées crues',     cat: 'Légumes',     statut: 'interdit',  explication: "Conditions d'humidité favorisent E. coli et salmonelle.", alt: 'Graines germées bien cuites (sautées).' },
+      { id: 'champignons-crus',   nom: 'Champignons crus',          cat: 'Légumes',     statut: 'attention', explication: "Risque parasitaire si ramassés. Ceux du commerce, bien lavés, sont OK.", alt: 'Champignons cuits.' },
+      { id: 'champignons-cuits',  nom: 'Champignons cuits',         cat: 'Légumes',     statut: 'ok',        explication: "Cuits, sans risque.", alt: null },
+      { id: 'avocat',             nom: 'Avocat',                    cat: 'Légumes',     statut: 'ok',        explication: "Excellent pour la grossesse : bons acides gras et folates.", alt: null },
+
+      // ===== CÉRÉALES & FÉCULENTS =====
+      { id: 'pates-riz-cuits',    nom: 'Pâtes, riz, semoule',       cat: 'Féculents',   statut: 'ok',        explication: "Bien cuits, sans risque.", alt: null },
+      { id: 'pain',               nom: 'Pain',                      cat: 'Féculents',   statut: 'ok',        explication: "Aucun souci.", alt: null },
+      { id: 'pates-fraiches',     nom: 'Pâtes fraîches',            cat: 'Féculents',   statut: 'ok',        explication: "Cuites, sans risque (les œufs cuisent à la cuisson).", alt: null },
+      { id: 'sushi-rice',         nom: 'Riz vinaigré (sushi)',      cat: 'Féculents',   statut: 'ok',        explication: "Le riz cuit est sûr, c'est ce qui l'accompagne (poisson cru) qui pose problème.", alt: null },
+      { id: 'farine-crue',        nom: 'Farine crue',               cat: 'Féculents',   statut: 'interdit',  explication: "Peut contenir E. coli. Ne goûte pas la pâte à gâteau crue.", alt: 'Goûte seulement après cuisson.' },
+
+      // ===== SUCRES, SUCRERIES & PÂTISSERIES =====
+      { id: 'sucre-blanc',        nom: 'Sucre blanc',               cat: 'Sucres',      statut: 'ok',        explication: "Sans risque sanitaire, mais à modérer (apport calorique vide).", alt: null },
+      { id: 'sucre-roux',         nom: 'Sucre roux, cassonade',     cat: 'Sucres',      statut: 'ok',        explication: "Identique au sucre blanc côté risques.", alt: null },
+      { id: 'miel',               nom: 'Miel',                      cat: 'Sucres',      statut: 'ok',        explication: "Sans risque pour toi (le risque botulinique concerne uniquement les bébés < 1 an).", alt: null },
+      { id: 'sirop-erable',       nom: 'Sirop d\'érable, agave',    cat: 'Sucres',      statut: 'ok',        explication: "Sans risque, mais reste sucré.", alt: null },
+      { id: 'edulcorants',        nom: 'Édulcorants (aspartame, sucralose)', cat: 'Sucres', statut: 'attention', explication: "À consommer modérément. Pas de risque démontré aux doses normales mais privilégie le sucre naturel.", alt: 'Sucre, miel, sirop d\'érable.' },
+      { id: 'stevia',             nom: 'Stévia',                    cat: 'Sucres',      statut: 'attention', explication: "Peu d'études sur la grossesse : à modérer.", alt: 'Sucre classique en petites quantités.' },
+      { id: 'chocolat',           nom: 'Chocolat noir / au lait',   cat: 'Sucres',      statut: 'ok',        explication: "Contient un peu de caféine (le noir surtout) : modère si tu en consommes beaucoup.", alt: null },
+      { id: 'bonbons',            nom: 'Bonbons',                   cat: 'Sucres',      statut: 'ok',        explication: "Sans risque sanitaire. À limiter pour les sucres et les édulcorants.", alt: null },
+      { id: 'reglisse-bonbon',    nom: 'Bonbons à la réglisse',     cat: 'Sucres',      statut: 'attention', explication: "La réglisse en grandes quantités peut élever la tension. À limiter.", alt: 'Autres bonbons.' },
+      { id: 'patisseries',        nom: 'Pâtisseries cuites',        cat: 'Sucres',      statut: 'ok',        explication: "Œufs et lait cuits dans la pâtisserie. À modérer pour le sucre.", alt: null },
+      { id: 'patisserie-creme',   nom: 'Pâtisseries à la crème',    cat: 'Sucres',      statut: 'attention', explication: "Si la crème contient des œufs crus (mousseline, sabayon), évite. Sinon OK.", alt: 'Choisis des pâtisseries sans crème crue.' },
+      { id: 'eclair',             nom: 'Éclair, religieuse',        cat: 'Sucres',      statut: 'ok',        explication: "Crème pâtissière cuite : sans risque.", alt: null },
+      { id: 'macarons',           nom: 'Macarons',                  cat: 'Sucres',      statut: 'ok',        explication: "Cuits, sans risque.", alt: null },
+      { id: 'crepes-cuites',      nom: 'Crêpes, gaufres',           cat: 'Sucres',      statut: 'ok',        explication: "Cuites, sans souci.", alt: null },
+      { id: 'guimauve',           nom: 'Guimauve, marshmallow',     cat: 'Sucres',      statut: 'ok',        explication: "Sans risque sanitaire.", alt: null },
+      { id: 'nougat-praline',     nom: 'Nougat, pralinés',          cat: 'Sucres',      statut: 'ok',        explication: "Sans risque.", alt: null },
+
+      // ===== ÉPICES & CONDIMENTS =====
+      { id: 'epices-courantes',   nom: 'Épices courantes (poivre, paprika, curry…)', cat: 'Épices', statut: 'ok', explication: "Aucune contre-indication aux doses culinaires.", alt: null },
+      { id: 'cannelle',           nom: 'Cannelle',                  cat: 'Épices',      statut: 'attention', explication: "À doses normales, OK. À haute dose (compléments), peut affecter le foie.", alt: 'Quantités culinaires uniquement.' },
+      { id: 'safran',             nom: 'Safran',                    cat: 'Épices',      statut: 'attention', explication: "Quantités culinaires OK. Évite les compléments.", alt: 'Petites quantités.' },
+      { id: 'curcuma',            nom: 'Curcuma',                   cat: 'Épices',      statut: 'attention', explication: "Quantités culinaires OK. Évite les compléments à forte dose.", alt: 'Quantités culinaires uniquement.' },
+      { id: 'persil-cuit',        nom: 'Persil',                    cat: 'Épices',      statut: 'ok',        explication: "Aux doses culinaires, sans souci.", alt: null },
+      { id: 'sel',                nom: 'Sel',                       cat: 'Épices',      statut: 'ok',        explication: "À modérer si tu as de la rétention d'eau.", alt: null },
+      { id: 'moutarde',           nom: 'Moutarde',                  cat: 'Condiments',  statut: 'ok',        explication: "Sans risque.", alt: null },
+      { id: 'ketchup',            nom: 'Ketchup',                   cat: 'Condiments',  statut: 'ok',        explication: "Industriel pasteurisé, sans risque.", alt: null },
+      { id: 'sauce-soja',         nom: 'Sauce soja',                cat: 'Condiments',  statut: 'ok',        explication: "Sans risque, mais très salée.", alt: null },
+      { id: 'vinaigre',           nom: 'Vinaigre',                  cat: 'Condiments',  statut: 'ok',        explication: "Sans risque.", alt: null },
+      { id: 'huiles',             nom: 'Huiles (olive, colza…)',    cat: 'Condiments',  statut: 'ok',        explication: "Aucun problème, et bonnes pour Curtis (acides gras).", alt: null },
+      { id: 'pesto-industriel',   nom: 'Pesto industriel',          cat: 'Condiments',  statut: 'ok',        explication: "Pasteurisé, sans risque.", alt: null },
+      { id: 'pesto-frais',        nom: 'Pesto frais (au rayon frais)', cat: 'Condiments', statut: 'attention', explication: "Souvent contient du parmesan et des pignons crus : risque résiduel listeria.", alt: 'Pesto industriel longue conservation.' },
+      { id: 'houmous',            nom: 'Houmous',                   cat: 'Condiments',  statut: 'ok',        explication: "Pois chiches cuits + tahini : sans risque.", alt: null },
+
+      // ===== DIVERS =====
+      { id: 'soja',               nom: 'Soja (en grande quantité)', cat: 'Divers',      statut: 'attention', explication: "Les phytoestrogènes du soja peuvent influencer le développement hormonal en cas de consommation excessive.", alt: 'Limite à 1 portion par jour.' },
+      { id: 'tofu',               nom: 'Tofu cuit',                 cat: 'Divers',      statut: 'ok',        explication: "Pasteurisé et cuit : OK. Limite à 1 portion par jour pour les phytoestrogènes.", alt: null },
+      { id: 'tempeh',             nom: 'Tempeh',                    cat: 'Divers',      statut: 'ok',        explication: "Cuit, sans risque.", alt: null },
+      { id: 'sandwich-industriel',nom: 'Sandwich industriel',       cat: 'Plats préparés', statut: 'attention', explication: "Risque de listeria selon les ingrédients (charcuterie, fromage à pâte molle).", alt: 'Sandwich maison avec ingrédients sûrs.' },
+      { id: 'plat-rechauffe',     nom: 'Restes réchauffés',         cat: 'Plats préparés', statut: 'attention', explication: "Réchauffe à très haute température (>70°C à cœur) et consomme rapidement.", alt: 'Réchauffage complet et rapide après cuisson.' },
+      { id: 'pizza-cuite',        nom: 'Pizza bien cuite',          cat: 'Plats préparés', statut: 'ok',     explication: "Sortie du four, les fromages sont chauffés à >70°C : sans risque.", alt: null },
+      { id: 'pizza-froide',       nom: 'Pizza froide / réchauffée tiède', cat: 'Plats préparés', statut: 'attention', explication: "Si la pizza n'est pas bien réchauffée, risque listeria sur les fromages.", alt: 'Réchauffe bien à cœur.' },
+      { id: 'sushi-cuits',        nom: 'Sushis cuits (omelette, crevette)', cat: 'Plats préparés', statut: 'ok', explication: "Sushis sans poisson cru : OK.", alt: null },
+
+      // ===== COMPLÉMENTS & HERBES =====
+      { id: 'acide-folique',      nom: 'Acide folique (B9)',        cat: 'Compléments', statut: 'ok',        explication: "Recommandé en supplément avant et durant le 1er trimestre pour prévenir les anomalies du tube neural.", alt: null },
+      { id: 'fer',                nom: 'Fer (sur prescription)',    cat: 'Compléments', statut: 'ok',        explication: "À prendre uniquement si carence diagnostiquée par ton médecin.", alt: null },
+      { id: 'vitamine-d',         nom: 'Vitamine D',                cat: 'Compléments', statut: 'ok',        explication: "Souvent supplémentée, surtout au 3e trimestre. Suis les recommandations médicales.", alt: null },
+      { id: 'vitamine-a-supp',    nom: 'Vitamine A en complément',  cat: 'Compléments', statut: 'interdit',  explication: "Tératogène à haute dose. À éviter sauf prescription.", alt: 'Bêta-carotène (provitamine A) via les légumes orange.' },
+      { id: 'multivit-grossesse', nom: 'Multivitamines grossesse',  cat: 'Compléments', statut: 'ok',        explication: "Spécifiques grossesse, dosées correctement. Demande à ta sage-femme la marque conseillée.", alt: null },
+      { id: 'huile-poisson',      nom: 'Huile de poisson / oméga-3', cat: 'Compléments', statut: 'attention', explication: "Bénéfique pour le développement cérébral mais vérifie l'absence de contaminants (mercure).", alt: 'Marques spécifiques grossesse, ou poisson 2x/semaine.' },
+      { id: 'huile-foie-morue',   nom: 'Huile de foie de morue',    cat: 'Compléments', statut: 'interdit',  explication: "Très riche en vitamine A : risque tératogène.", alt: 'Huile de poisson classique (sans foie).' },
+      { id: 'gelee-royale',       nom: 'Gelée royale, propolis',    cat: 'Compléments', statut: 'attention', explication: "Peu d'études sur la grossesse. Demande conseil avant.", alt: 'Pas indispensable, demande à ta sage-femme.' },
+      { id: 'spiruline',          nom: 'Spiruline',                 cat: 'Compléments', statut: 'attention', explication: "Risque de contamination si non certifiée. Demande conseil.", alt: 'Marques bio certifiées.' },
+      { id: 'huiles-essentielles',nom: 'Huiles essentielles',       cat: 'Compléments', statut: 'interdit',  explication: "La grande majorité sont contre-indiquées (effets hormonaux, neurotoxiques).", alt: 'Demande à un aromathérapeute spécialisé grossesse.' }
+    ];
+
+    /* ==========================================================
+       STATE & STORAGE
+       ========================================================== */
+    const STORAGE_KEY = 'maGrossesse:v1';
+    const defaultState = {
+      currentWeek: 12,
+      dueDate: null,
+      darkMode: null, // null = follow system
+      favorites: []
+    };
+
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return { ...defaultState };
+        return { ...defaultState, ...JSON.parse(raw) };
+      } catch {
+        return { ...defaultState };
+      }
+    }
+    function saveState() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+    }
+
+    /* ==========================================================
+       UTILITIES
+       ========================================================== */
+    function normalize(s) {
+      return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+    function clamp(n, min, max) { return Math.min(max, Math.max(min, n)); }
+    function trimesterOf(week) {
+      if (week <= 14) return 1;
+      if (week <= 27) return 2;
+      return 3;
+    }
+    function trimesterLabel(t) {
+      return ['', 'Premier trimestre', 'Deuxième trimestre', 'Troisième trimestre'][t];
+    }
+    function formatNumber(n) {
+      if (n < 1) return n.toFixed(1).replace('.', ',') + ' mm';
+      return n.toFixed(1).replace('.', ',') + ' cm';
+    }
+    function formatWeight(g) {
+      if (g < 1000) return Math.round(g) + ' g';
+      return (g / 1000).toFixed(g >= 2000 ? 1 : 2).replace('.', ',') + ' kg';
+    }
+    function computeWeekFromDueDate(dueIso) {
+      if (!dueIso) return null;
+      const due = new Date(dueIso);
+      const conception = new Date(due);
+      conception.setDate(conception.getDate() - 280); // 40 SA = 280 jours depuis DDR
+      const diffMs = Date.now() - conception.getTime();
+      const weeks = Math.floor(diffMs / (7 * 86400 * 1000));
+      return clamp(weeks, 4, 40);
+    }
+
+    function refreshFromDueDate(animate = true) {
+      if (!state.dueDate) return;
+      const auto = computeWeekFromDueDate(state.dueDate);
+      if (auto && auto !== state.currentWeek) {
+        setWeek(auto, animate);
+      }
+      updateActualWeekHint();
+    }
+
+    function updateActualWeekHint() {
+      const hint = document.getElementById('actual-week-hint');
+      if (!hint) return;
+      if (!state.dueDate) {
+        hint.hidden = true;
+        return;
+      }
+      const auto = computeWeekFromDueDate(state.dueDate);
+      if (auto && auto !== state.currentWeek) {
+        hint.hidden = false;
+        document.getElementById('actual-week-num').textContent = auto;
+      } else {
+        hint.hidden = true;
+      }
+    }
+
+    /* ==========================================================
+       SUIVI VIEW RENDERING
+       ========================================================== */
+    const els = {
+      weekNum: document.getElementById('week-num'),
+      dayInfo: document.getElementById('day-info'),
+      trimesterChip: document.getElementById('trimester-chip'),
+      sizeCircle: document.getElementById('size-circle'),
+      sizeEmoji: document.getElementById('size-emoji'),
+      compName: document.getElementById('comparison-name'),
+      statSize: document.getElementById('stat-size'),
+      statWeight: document.getElementById('stat-weight'),
+      desc: document.getElementById('week-description'),
+      progressFill: document.getElementById('progress-fill'),
+      metaWeek: document.getElementById('meta-week'),
+      metaTrim: document.getElementById('meta-trim'),
+      metaRemaining: document.getElementById('meta-remaining'),
+      slider: document.getElementById('week-slider'),
+      prevBtn: document.getElementById('prev-week'),
+      nextBtn: document.getElementById('next-week'),
+      hero: document.getElementById('hero-week'),
+      compCard: document.getElementById('comparison-card'),
+      descCard: document.querySelector('.description-card')
+    };
+
+    // Max weight pour calculer l'échelle (semaine 40 ≈ 3500 g)
+    const MAX_WEIGHT = 3500;
+
+    function renderWeek(week, animate = true) {
+      const data = WEEKS.find(w => w.w === week);
+      if (!data) return;
+
+      // Animation : fade out
+      if (animate) {
+        document.body.classList.add('changing');
+      }
+
+      const apply = () => {
+        els.weekNum.textContent = data.w;
+        els.compName.textContent = `une ${data.comp}`;
+        els.sizeEmoji.textContent = data.emoji;
+        els.statSize.textContent = formatNumber(data.taille);
+        els.statWeight.textContent = formatWeight(data.poids);
+        els.desc.textContent = data.desc;
+
+        // Échelle visuelle (proportionnelle au poids ^ 0.5 pour effet doux)
+        const scale = 0.35 + 0.65 * Math.pow(data.poids / MAX_WEIGHT, 0.4);
+        els.sizeCircle.style.setProperty('--circle-scale', scale.toFixed(3));
+
+        // Trimester chip
+        const t = trimesterOf(data.w);
+        els.trimesterChip.textContent = trimesterLabel(t);
+
+        // Header progress
+        const pct = ((data.w - 4) / 36) * 100;
+        els.progressFill.style.setProperty('--progress', pct + '%');
+        els.metaWeek.textContent = `Semaine ${data.w}`;
+        els.metaTrim.textContent = `T${t}`;
+        const remaining = 40 - data.w;
+        els.metaRemaining.textContent = remaining > 0 ? `${remaining} sem. restantes` : 'Terme atteint';
+        els.dayInfo.textContent = `≈ ${data.w * 7} jours · ${remaining} semaines restantes`;
+
+        // Slider
+        if (els.slider.value != data.w) els.slider.value = data.w;
+
+        // Boutons enabled/disabled
+        els.prevBtn.disabled = data.w <= 4;
+        els.nextBtn.disabled = data.w >= 40;
+
+        if (animate) {
+          requestAnimationFrame(() => {
+            document.body.classList.remove('changing');
+          });
+        }
+      };
+
+      if (animate) {
+        setTimeout(apply, 180);
+      } else {
+        apply();
+      }
+    }
+
+    function setWeek(week, animate = true) {
+      week = clamp(week, 4, 40);
+      state.currentWeek = week;
+      saveState();
+      renderWeek(week, animate);
+      // Sync stepper in settings
+      const sv = document.getElementById('set-week-value');
+      if (sv) sv.textContent = week;
+      // Sync hint
+      updateActualWeekHint();
+    }
+
+    /* ==========================================================
+       FOOD VIEW RENDERING
+       ========================================================== */
+    const foodEls = {
+      list: document.getElementById('food-list'),
+      search: document.getElementById('food-search'),
+      clear: document.getElementById('search-clear'),
+      pills: document.getElementById('filter-pills'),
+      sugg: document.getElementById('suggestions')
+    };
+
+    let activeFilter = 'all';
+    let searchQuery = '';
+
+    function statusIcon(s) {
+      return s === 'ok' ? '✓' : s === 'attention' ? '!' : '×';
+    }
+    function statusLabel(s) {
+      return s === 'ok' ? 'Autorisé' : s === 'attention' ? 'Attention' : 'À éviter';
+    }
+
+    function filterFoods() {
+      const q = normalize(searchQuery.trim());
+      return FOODS.filter(f => {
+        // Filter
+        if (activeFilter === 'favorites') {
+          if (!state.favorites.includes(f.id)) return false;
+        } else if (activeFilter !== 'all' && f.statut !== activeFilter) {
+          return false;
+        }
+        // Search
+        if (q) {
+          const hay = normalize(f.nom + ' ' + f.cat);
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+    }
+
+    function renderFoodList() {
+      const items = filterFoods();
+      const list = foodEls.list;
+      list.innerHTML = '';
+
+      if (items.length === 0) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <div class="emoji">🍽️</div>
+            <p>${searchQuery ? 'Aucun aliment trouvé.' : (activeFilter === 'favorites' ? 'Aucun favori. Touche l\'étoile sur un aliment pour l\'ajouter.' : 'Aucun résultat.')}</p>
+          </div>
+        `;
+      } else {
+        const frag = document.createDocumentFragment();
+        items.forEach(f => {
+          const card = document.createElement('button');
+          card.className = 'food-card';
+          card.dataset.id = f.id;
+          card.dataset.status = f.statut;
+          const isFav = state.favorites.includes(f.id);
+          card.innerHTML = `
+            <span class="food-status">${statusIcon(f.statut)}</span>
+            <div class="food-text">
+              <div class="food-name">${f.nom}</div>
+              <div class="food-cat">${f.cat}</div>
+            </div>
+            <span class="fav-btn ${isFav ? 'is-fav' : ''}" data-fav="${f.id}" role="button" aria-label="Favori">
+              <svg viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15 8.5 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 9 8.5 12 2"/>
+              </svg>
+            </span>
+          `;
+          frag.appendChild(card);
+        });
+        list.appendChild(frag);
+      }
+      updateCounts();
+    }
+
+    function updateCounts() {
+      const total = FOODS.length;
+      const counts = {
+        all: total,
+        ok: FOODS.filter(f => f.statut === 'ok').length,
+        attention: FOODS.filter(f => f.statut === 'attention').length,
+        interdit: FOODS.filter(f => f.statut === 'interdit').length,
+        favorites: state.favorites.length
+      };
+      document.getElementById('count-all').textContent = counts.all;
+      document.getElementById('count-ok').textContent = counts.ok;
+      document.getElementById('count-attention').textContent = counts.attention;
+      document.getElementById('count-interdit').textContent = counts.interdit;
+      document.getElementById('count-fav').textContent = counts.favorites;
+    }
+
+    /* ==========================================================
+       AUTOCOMPLETE
+       ========================================================== */
+    function renderSuggestions() {
+      const q = normalize(searchQuery.trim());
+      if (!q || q.length < 2) {
+        foodEls.sugg.hidden = true;
+        return;
+      }
+      const matches = FOODS.filter(f => normalize(f.nom).includes(q)).slice(0, 6);
+      if (matches.length === 0) {
+        foodEls.sugg.hidden = true;
+        return;
+      }
+      foodEls.sugg.innerHTML = matches.map(f => `
+        <button class="suggestion" data-id="${f.id}">
+          <span class="suggestion-dot" style="background: var(--${f.statut === 'ok' ? 'ok' : f.statut === 'attention' ? 'warn' : 'danger'})"></span>
+          <span class="suggestion-name">${f.nom}</span>
+          <span class="suggestion-cat">${f.cat}</span>
+        </button>
+      `).join('');
+      foodEls.sugg.hidden = false;
+    }
+
+    /* ==========================================================
+       MODAL
+       ========================================================== */
+    const modal = {
+      el: document.getElementById('modal'),
+      banner: document.getElementById('modal-status'),
+      iconEl: document.getElementById('modal-status-icon'),
+      textEl: document.getElementById('modal-status-text'),
+      cat: document.getElementById('modal-cat'),
+      title: document.getElementById('modal-title'),
+      why: document.getElementById('modal-why'),
+      altSection: document.getElementById('modal-alt-section'),
+      alt: document.getElementById('modal-alt'),
+      favBtn: document.getElementById('modal-fav'),
+      closeBtn: document.getElementById('modal-close')
+    };
+
+    let currentFoodId = null;
+
+    function openFood(id) {
+      const f = FOODS.find(x => x.id === id);
+      if (!f) return;
+      currentFoodId = id;
+      modal.banner.dataset.status = f.statut;
+      modal.iconEl.textContent = statusIcon(f.statut);
+      modal.textEl.textContent = statusLabel(f.statut);
+      modal.cat.textContent = f.cat;
+      modal.title.textContent = f.nom;
+      modal.why.textContent = f.explication;
+      if (f.alt) {
+        modal.alt.textContent = f.alt;
+        modal.altSection.hidden = false;
+      } else {
+        modal.altSection.hidden = true;
+      }
+      updateModalFavBtn();
+      modal.el.hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+    function closeFood() {
+      modal.el.hidden = true;
+      document.body.style.overflow = '';
+      currentFoodId = null;
+    }
+    function updateModalFavBtn() {
+      if (!currentFoodId) return;
+      const isFav = state.favorites.includes(currentFoodId);
+      modal.favBtn.textContent = isFav ? '★ Retirer des favoris' : '☆ Ajouter aux favoris';
+    }
+
+    function toggleFav(id) {
+      const i = state.favorites.indexOf(id);
+      if (i >= 0) state.favorites.splice(i, 1);
+      else state.favorites.push(id);
+      saveState();
+      renderFoodList();
+      updateModalFavBtn();
+    }
+
+    /* ==========================================================
+       NAVIGATION TABS
+       ========================================================== */
+    function switchTab(tab) {
+      document.querySelectorAll('.view').forEach(v => {
+        v.hidden = v.dataset.view !== tab;
+      });
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.tab === tab);
+      });
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    /* ==========================================================
+       THEME
+       ========================================================== */
+    function applyTheme() {
+      const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const dark = state.darkMode === null ? sysDark : state.darkMode;
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      const checkbox = document.getElementById('dark-toggle');
+      if (checkbox) checkbox.checked = dark;
+      // Update theme icon
+      const icon = document.getElementById('theme-icon');
+      if (icon) {
+        icon.innerHTML = dark
+          ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+          : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>';
+      }
+    }
+
+    /* ==========================================================
+       INIT & EVENT BINDINGS
+       ========================================================== */
+    function init() {
+      // Apply theme
+      applyTheme();
+
+      // Auto-compute week from due date if set (initial)
+      if (state.dueDate) {
+        const auto = computeWeekFromDueDate(state.dueDate);
+        if (auto) state.currentWeek = auto;
+      }
+      state.currentWeek = clamp(state.currentWeek, 4, 40);
+
+      // Initial render
+      setWeek(state.currentWeek, false);
+      renderFoodList();
+      updateCounts();
+      updateActualWeekHint();
+
+      // Settings UI
+      document.getElementById('set-week-value').textContent = state.currentWeek;
+      if (state.dueDate) document.getElementById('due-date').value = state.dueDate;
+      document.getElementById('dark-toggle').checked = state.darkMode === true || (state.darkMode === null && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+      // Tab navigation
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      // Week navigation
+      els.prevBtn.addEventListener('click', () => setWeek(state.currentWeek - 1));
+      els.nextBtn.addEventListener('click', () => setWeek(state.currentWeek + 1));
+      els.slider.addEventListener('input', e => setWeek(parseInt(e.target.value, 10), false));
+      els.slider.addEventListener('change', e => setWeek(parseInt(e.target.value, 10), true));
+
+      // Theme toggle
+      document.getElementById('theme-toggle').addEventListener('click', () => {
+        const current = document.documentElement.dataset.theme === 'dark';
+        state.darkMode = !current;
+        saveState();
+        applyTheme();
+      });
+      document.getElementById('dark-toggle').addEventListener('change', e => {
+        state.darkMode = e.target.checked;
+        saveState();
+        applyTheme();
+      });
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+        if (state.darkMode === null) applyTheme();
+      });
+
+      // Settings: due date
+      document.getElementById('due-date').addEventListener('change', e => {
+        state.dueDate = e.target.value || null;
+        if (state.dueDate) {
+          const auto = computeWeekFromDueDate(state.dueDate);
+          if (auto) setWeek(auto);
+        }
+        saveState();
+      });
+
+      // Settings: stepper
+      document.getElementById('set-week-minus').addEventListener('click', () => setWeek(state.currentWeek - 1));
+      document.getElementById('set-week-plus').addEventListener('click', () => setWeek(state.currentWeek + 1));
+
+      // Bouton "Y revenir" : retour à la semaine actuelle calculée depuis DPA
+      document.getElementById('goto-actual-week').addEventListener('click', () => {
+        if (!state.dueDate) return;
+        const auto = computeWeekFromDueDate(state.dueDate);
+        if (auto) setWeek(auto);
+      });
+
+      // Recalcul dynamique : à chaque retour sur l'app, on recalcule la semaine
+      // depuis la DPA. Si l'utilisatrice avait navigué manuellement, elle est
+      // automatiquement ramenée à sa vraie semaine actuelle.
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') refreshFromDueDate(true);
+      });
+      window.addEventListener('focus', () => refreshFromDueDate(true));
+      window.addEventListener('pageshow', () => refreshFromDueDate(false));
+
+      // Reset
+      document.getElementById('reset-data').addEventListener('click', () => {
+        // Pas de confirm() natif (iOS PWA)
+        const btn = document.getElementById('reset-data');
+        if (btn.dataset.confirm === '1') {
+          state = { ...defaultState };
+          saveState();
+          location.reload();
+        } else {
+          btn.dataset.confirm = '1';
+          btn.textContent = 'Confirmer ?';
+          btn.style.background = 'var(--danger-soft)';
+          btn.style.color = 'var(--danger)';
+          setTimeout(() => {
+            if (btn.dataset.confirm === '1') {
+              btn.dataset.confirm = '0';
+              btn.textContent = 'Effacer';
+              btn.style.background = '';
+              btn.style.color = '';
+            }
+          }, 3000);
+        }
+      });
+
+      // Search
+      foodEls.search.addEventListener('input', e => {
+        searchQuery = e.target.value;
+        renderFoodList();
+        renderSuggestions();
+      });
+      foodEls.search.addEventListener('focus', renderSuggestions);
+      foodEls.clear.addEventListener('click', () => {
+        foodEls.search.value = '';
+        searchQuery = '';
+        renderFoodList();
+        foodEls.sugg.hidden = true;
+        foodEls.search.focus();
+      });
+      // Sélection d'une suggestion : pointerdown (mobile + desktop), avec preventDefault
+      // pour que l'input ne perde PAS le focus avant que le handler ne s'exécute.
+      foodEls.sugg.addEventListener('pointerdown', e => {
+        const btn = e.target.closest('.suggestion');
+        if (!btn) return;
+        e.preventDefault();
+        const id = btn.dataset.id;
+        foodEls.search.value = '';
+        searchQuery = '';
+        foodEls.sugg.hidden = true;
+        foodEls.search.blur(); // ferme le clavier mobile
+        renderFoodList();
+        openFood(id);
+      });
+      // Click-outside global pour fermer les suggestions (plus robuste que blur)
+      document.addEventListener('pointerdown', e => {
+        if (foodEls.sugg.hidden) return;
+        if (e.target.closest('.search-box')) return;
+        foodEls.sugg.hidden = true;
+      });
+      // Touche Entrée : ouvre la 1re suggestion si elle existe
+      foodEls.search.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          const first = foodEls.sugg.querySelector('.suggestion');
+          if (first) {
+            e.preventDefault();
+            const id = first.dataset.id;
+            foodEls.search.value = '';
+            searchQuery = '';
+            foodEls.sugg.hidden = true;
+            foodEls.search.blur();
+            renderFoodList();
+            openFood(id);
+          }
+        }
+      });
+
+      // Filters
+      foodEls.pills.addEventListener('click', e => {
+        const pill = e.target.closest('.filter-pill');
+        if (!pill) return;
+        activeFilter = pill.dataset.filter;
+        document.querySelectorAll('.filter-pill').forEach(p => p.classList.toggle('active', p === pill));
+        renderFoodList();
+      });
+
+      // Food list interactions (event delegation)
+      foodEls.list.addEventListener('click', e => {
+        const fav = e.target.closest('[data-fav]');
+        if (fav) {
+          e.stopPropagation();
+          toggleFav(fav.dataset.fav);
+          return;
+        }
+        const card = e.target.closest('.food-card');
+        if (card) openFood(card.dataset.id);
+      });
+
+      // Modal
+      modal.closeBtn.addEventListener('click', closeFood);
+      modal.favBtn.addEventListener('click', () => currentFoodId && toggleFav(currentFoodId));
+      modal.el.addEventListener('click', e => {
+        if (e.target === modal.el) closeFood();
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !modal.el.hidden) closeFood();
+      });
+
+      // Service Worker (silent fail si pas encore créé)
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js').catch(() => { /* OK : sw.js sera créé ensuite */ });
+        });
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
