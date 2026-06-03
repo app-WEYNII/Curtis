@@ -949,11 +949,33 @@
 
     .input-base {
       width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
       padding: 12px 14px;
       border: 1px solid var(--border-strong);
       border-radius: var(--r);
       background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      text-align: center;
+      -webkit-appearance: none;
+      appearance: none;
       transition: border-color 200ms, box-shadow 200ms;
+    }
+    /* iOS : empêcher le champ date de déborder et centrer sa valeur */
+    input[type="date"].input-base {
+      display: block;
+      min-height: 48px;
+    }
+    input[type="date"].input-base::-webkit-date-and-time-value {
+      text-align: center;
+      width: 100%;
+      margin: 0;
+    }
+    input[type="date"].input-base::-webkit-calendar-picker-indicator {
+      display: none;
+      -webkit-appearance: none;
     }
     .input-base:focus {
       outline: none;
