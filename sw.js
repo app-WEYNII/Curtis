@@ -3,7 +3,7 @@
    Stratégie : cache-first pour la coquille, network-first pour
    les ressources externes (fonts).
    ============================================================ */
-const CACHE_VERSION = 'ma-grossesse-v5';
+const CACHE_VERSION = 'ma-grossesse-v6';
 const CORE_ASSETS = [
   './',
   './index.html',
