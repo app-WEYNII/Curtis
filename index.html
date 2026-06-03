@@ -242,10 +242,20 @@
     .progress-meta {
       display: flex;
       justify-content: space-between;
-      font-size: 12px;
+      align-items: center;
+      gap: 10px;
+      font-size: 11.5px;
       color: var(--text-muted);
-      margin-top: 6px;
-      letter-spacing: 0.02em;
+      margin-top: 8px;
+      letter-spacing: 0.01em;
+    }
+    .progress-meta span {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .progress-meta span:nth-child(2) {
+      flex: 1 1 auto;
+      text-align: center;
     }
 
     /* ==========================================================
@@ -319,10 +329,18 @@
       letter-spacing: 0.02em;
     }
 
+    .month-info {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-deep);
+      margin-top: 8px;
+      letter-spacing: 0.01em;
+    }
+
     .day-info {
       font-size: 13px;
       color: var(--text-muted);
-      margin-top: 6px;
+      margin-top: 4px;
     }
 
     /* Comparison card */
@@ -1158,7 +1176,8 @@
           <div class="week-display">
             <span class="week-num" id="week-num">12</span>
             <span class="week-label">semaines de grossesse</span>
-            <span class="day-info" id="day-info">≈ 84 jours · 28 semaines restantes</span>
+            <span class="month-info" id="month-info">3e mois de grossesse</span>
+            <span class="day-info" id="day-info">≈ 84 jours · 29 sem. restantes</span>
           </div>
         </div>
 
@@ -1194,8 +1213,8 @@
 
         <div class="week-slider-wrap">
           <label for="week-slider">Aller à la semaine</label>
-          <input type="range" min="4" max="40" value="12" class="week-slider" id="week-slider" />
-          <div class="slider-labels"><span>4</span><span>22</span><span>40</span></div>
+          <input type="range" min="4" max="41" value="12" class="week-slider" id="week-slider" />
+          <div class="slider-labels"><span>4</span><span>22</span><span>41</span></div>
         </div>
       </section>
 
@@ -1231,21 +1250,22 @@
         <h2 class="settings-title">Réglages</h2>
 
         <div class="setting-card">
-          <h3>Date prévue d'accouchement</h3>
-          <p class="hint">La semaine actuelle sera calculée automatiquement.</p>
-          <input type="date" class="input-base" id="due-date" />
+          <h3>Date de début de grossesse</h3>
+          <p class="hint">Date de conception / de début de grossesse (celle donnée par le médecin ou l'échographie). Le terme et la semaine en cours (en SA) sont calculés automatiquement.</p>
+          <input type="date" class="input-base" id="start-date" />
+          <p class="hint" id="due-date-info" style="margin-top: 10px;" hidden></p>
         </div>
 
         <div class="setting-card">
           <h3>Semaine actuelle</h3>
-          <p class="hint">Ajustement manuel (4 à 40).</p>
+          <p class="hint">Fixe manuellement la semaine (4 à 41). Elle reste figée jusqu'à « Y revenir ».</p>
           <div class="stepper">
             <button class="stepper-btn" id="set-week-minus">−</button>
             <span class="stepper-value" id="set-week-value">12</span>
             <button class="stepper-btn" id="set-week-plus">+</button>
           </div>
           <div id="actual-week-hint" class="actual-week-hint" hidden>
-            <span>Tu es en semaine <strong id="actual-week-num">—</strong> selon ta DPA.</span>
+            <span>Tu es en semaine <strong id="actual-week-num">—</strong> selon ta date de début.</span>
             <button class="btn-link" id="goto-actual-week">Y revenir</button>
           </div>
         </div>
@@ -1345,39 +1365,40 @@
       { w: 5 , art: 'une', taille: 0.6,  poids: 0.5,  comp: 'graine de pomme',     emoji: '🫘', desc: "Le tube neural se forme : c'est le futur cerveau et la moelle épinière. Le minuscule cœur commence à battre faiblement." },
       { w: 6 , art: 'un',  taille: 0.8,  poids: 0.7,  comp: 'petit pois',          emoji: '🟢', desc: "Les bourgeons des bras et des jambes apparaissent. Le visage commence à se dessiner avec des taches sombres pour les yeux." },
       { w: 7 , art: 'une', taille: 1.3,  poids: 1,    comp: 'myrtille',            emoji: '🫐', desc: "Le cœur bat désormais nettement (≈ 150 bpm). Les organes principaux se mettent en place, et les doigts esquissent leur formation." },
-      { w: 8 , art: 'une', taille: 1.6,  poids: 1.5,  comp: 'fraise',              emoji: '🍓', desc: "Curtis ressemble enfin à un humain miniature. Les paupières se forment, les bras se plient au coude." },
+      { w: 8 , art: 'une', taille: 1.6,  poids: 1.5,  comp: 'fraise',              emoji: '🍓', desc: "Cléa ressemble enfin à un humain miniature. Les paupières se forment, les bras se plient au coude." },
       { w: 9 , art: 'une', taille: 2.3,  poids: 2,    comp: 'olive',               emoji: '🫒', desc: "L'embryon devient officiellement un fœtus. Les premiers mouvements existent déjà, même si tu ne les sens pas encore." },
       { w: 10, art: 'une', taille: 3.1,  poids: 4,    comp: 'cerise',              emoji: '🍒', desc: "Tous les organes vitaux sont en place et commencent à fonctionner. Les ongles et les cheveux se mettent à pousser." },
-      { w: 11, art: 'un',  taille: 4.1,  poids: 7,    comp: 'citron vert',         emoji: '🍋‍🟩', desc: "Curtis peut maintenant ouvrir et fermer les poings. Les organes génitaux externes se développent." },
-      { w: 12, art: 'un',  taille: 5.4,  poids: 14,   comp: 'kiwi',                emoji: '🥝', desc: "Fin du premier trimestre. Curtis bouge beaucoup, sursaute, fait des grimaces. Les risques de fausse couche diminuent." },
-      { w: 13, art: 'un',  taille: 7.4,  poids: 23,   comp: 'citron',              emoji: '🍋', desc: "Les empreintes digitales se dessinent. Curtis peut sucer son pouce et avaler du liquide amniotique." },
-      { w: 14, art: 'une', taille: 8.7,  poids: 43,   comp: 'nectarine',           emoji: '🥭', desc: "Curtis fait des expressions du visage : froncements de sourcils, grimaces. Le fin duvet (lanugo) recouvre la peau." },
-      { w: 15, art: 'une', taille: 10.1, poids: 70,   comp: 'pomme',               emoji: '🍎', desc: "Curtis entend les premiers sons étouffés : ton cœur, ta voix, les bruits digestifs. Les os durcissent progressivement." },
-      { w: 16, art: 'un',  taille: 11.6, poids: 100,  comp: 'avocat',              emoji: '🥑', desc: "Les muscles du cou se renforcent : Curtis peut tenir sa tête. Tu sens peut-être les premiers mouvements (« papillons »)." },
+      { w: 11, art: 'un',  taille: 4.1,  poids: 7,    comp: 'citron vert',         emoji: '🍋‍🟩', desc: "Cléa peut maintenant ouvrir et fermer les poings. Les organes génitaux externes se développent." },
+      { w: 12, art: 'un',  taille: 5.4,  poids: 14,   comp: 'kiwi',                emoji: '🥝', desc: "Cléa bouge beaucoup, sursaute, fait des grimaces. Les risques de fausse couche diminuent nettement." },
+      { w: 13, art: 'un',  taille: 7.4,  poids: 23,   comp: 'citron',              emoji: '🍋', desc: "Dernière semaine du premier trimestre. Les empreintes digitales se dessinent. Cléa peut sucer son pouce et avaler du liquide amniotique." },
+      { w: 14, art: 'une', taille: 8.7,  poids: 43,   comp: 'nectarine',           emoji: '🥭', desc: "Cléa fait des expressions du visage : froncements de sourcils, grimaces. Le fin duvet (lanugo) recouvre la peau." },
+      { w: 15, art: 'une', taille: 10.1, poids: 70,   comp: 'pomme',               emoji: '🍎', desc: "Cléa entend les premiers sons étouffés : ton cœur, ta voix, les bruits digestifs. Les os durcissent progressivement." },
+      { w: 16, art: 'un',  taille: 11.6, poids: 100,  comp: 'avocat',              emoji: '🥑', desc: "Les muscles du cou se renforcent : Cléa peut tenir sa tête. Tu sens peut-être les premiers mouvements (« papillons »)." },
       { w: 17, art: 'une', taille: 13,   poids: 140,  comp: 'poire',               emoji: '🍐', desc: "La graisse commence à se déposer sous la peau. Le squelette, jusqu'ici cartilagineux, se transforme en os." },
-      { w: 18, art: 'un',  taille: 14.2, poids: 190,  comp: 'poivron',             emoji: '🫑', desc: "Curtis bouge beaucoup, étire bras et jambes, et tu commences peut-être à sentir ces mouvements distinctement." },
-      { w: 19, art: 'une', taille: 15.3, poids: 240,  comp: 'grosse tomate',       emoji: '🍅', desc: "Le vernix caseosa, un enduit blanc protecteur, recouvre la peau de Curtis. Les sens (goût, odorat, toucher) se développent." },
-      { w: 20, art: 'un',  taille: 25.6, poids: 300,  comp: 'artichaut',           emoji: '🌿', desc: "Mi-parcours ! L'écho morphologique a souvent lieu cette semaine. Curtis entend ta voix de plus en plus clairement." },
-      { w: 21, art: 'une', taille: 26.7, poids: 360,  comp: 'carotte',             emoji: '🥕', desc: "Curtis avale du liquide amniotique : c'est l'apprentissage de la digestion. Ses sourcils et cils sont visibles." },
-      { w: 22, art: 'une', taille: 27.8, poids: 430,  comp: 'banane',              emoji: '🍌', desc: "Les sens s'affinent : Curtis perçoit la lumière à travers la paroi abdominale et reconnaît ta voix." },
-      { w: 23, art: 'un',  taille: 28.9, poids: 501,  comp: 'pamplemousse',        emoji: '🍊', desc: "Curtis prend du poids rapidement et sa peau, encore translucide, se pigmente. Les poumons continuent leur maturation." },
+      { w: 18, art: 'un',  taille: 14.2, poids: 190,  comp: 'poivron',             emoji: '🫑', desc: "Cléa bouge beaucoup, étire bras et jambes, et tu commences peut-être à sentir ces mouvements distinctement." },
+      { w: 19, art: 'une', taille: 15.3, poids: 240,  comp: 'grosse tomate',       emoji: '🍅', desc: "Le vernix caseosa, un enduit blanc protecteur, recouvre la peau de Cléa. Les sens (goût, odorat, toucher) se développent." },
+      { w: 20, art: 'un',  taille: 25.6, poids: 300,  comp: 'artichaut',           emoji: '🌿', desc: "Mi-parcours ! L'écho morphologique a souvent lieu cette semaine. Cléa entend ta voix de plus en plus clairement." },
+      { w: 21, art: 'une', taille: 26.7, poids: 360,  comp: 'carotte',             emoji: '🥕', desc: "Cléa avale du liquide amniotique : c'est l'apprentissage de la digestion. Ses sourcils et cils sont visibles." },
+      { w: 22, art: 'une', taille: 27.8, poids: 430,  comp: 'banane',              emoji: '🍌', desc: "Les sens s'affinent : Cléa perçoit la lumière à travers la paroi abdominale et reconnaît ta voix." },
+      { w: 23, art: 'un',  taille: 28.9, poids: 501,  comp: 'pamplemousse',        emoji: '🍊', desc: "Cléa prend du poids rapidement et sa peau, encore translucide, se pigmente. Les poumons continuent leur maturation." },
       { w: 24, art: 'un',  taille: 30,   poids: 600,  comp: 'épi de maïs',         emoji: '🌽', desc: "Date de viabilité : en cas de naissance prématurée, les chances de survie deviennent réelles avec une prise en charge néonatale." },
-      { w: 25, art: 'un',  taille: 34.6, poids: 660,  comp: 'rutabaga',            emoji: '🥔', desc: "Curtis réagit aux sons par des mouvements ou des changements de rythme cardiaque. Les narines s'ouvrent." },
-      { w: 26, art: 'une', taille: 35.6, poids: 760,  comp: 'salade',              emoji: '🥬', desc: "Les yeux s'ouvrent enfin et Curtis cligne des paupières. Il distingue maintenant l'obscurité de la lumière." },
-      { w: 27, art: 'un',  taille: 36.6, poids: 875,  comp: 'brocoli',             emoji: '🥦', desc: "Début du troisième trimestre. Curtis a un cycle veille-sommeil. Tu sens peut-être ses hoquets, comme de petits soubresauts rythmés." },
-      { w: 28, art: 'une', taille: 37.6, poids: 1000, comp: 'aubergine',           emoji: '🍆', desc: "Curtis pèse maintenant 1 kg ! Le cerveau se complexifie rapidement et forme de nouvelles connexions chaque seconde." },
-      { w: 29, art: 'un',  taille: 38.6, poids: 1150, comp: 'courgeron',           emoji: '🍠', desc: "Les os sont entièrement formés mais encore souples. Curtis prend du poids et de la graisse pour réguler sa température." },
-      { w: 30, art: 'un',  taille: 39.9, poids: 1300, comp: 'chou pommé',          emoji: '🥬', desc: "Le lanugo (duvet) commence à disparaître. Les cheveux poussent et Curtis voit mieux la lumière qui filtre." },
-      { w: 31, art: 'une', taille: 41.1, poids: 1500, comp: 'noix de coco',        emoji: '🥥', desc: "Curtis bouge beaucoup mais l'espace devient plus restreint. Tu peux sentir distinctement ses pieds et ses coudes." },
-      { w: 32, art: 'un',  taille: 42.4, poids: 1700, comp: 'jicama',              emoji: '🥔', desc: "Curtis se positionne souvent tête en bas en prévision de l'accouchement. Les ongles atteignent le bout des doigts." },
+      { w: 25, art: 'un',  taille: 34.6, poids: 660,  comp: 'rutabaga',            emoji: '🥔', desc: "Cléa réagit aux sons par des mouvements ou des changements de rythme cardiaque. Les narines s'ouvrent." },
+      { w: 26, art: 'une', taille: 35.6, poids: 760,  comp: 'salade',              emoji: '🥬', desc: "Les yeux s'ouvrent enfin et Cléa cligne des paupières. Il distingue maintenant l'obscurité de la lumière." },
+      { w: 27, art: 'un',  taille: 36.6, poids: 875,  comp: 'brocoli',             emoji: '🥦', desc: "Dernière semaine du deuxième trimestre. Cléa a un cycle veille-sommeil. Tu sens peut-être ses hoquets, comme de petits soubresauts rythmés." },
+      { w: 28, art: 'une', taille: 37.6, poids: 1000, comp: 'aubergine',           emoji: '🍆', desc: "Début du troisième trimestre. Cléa pèse maintenant 1 kg ! Le cerveau se complexifie rapidement et forme de nouvelles connexions chaque seconde." },
+      { w: 29, art: 'un',  taille: 38.6, poids: 1150, comp: 'courgeron',           emoji: '🍠', desc: "Les os sont entièrement formés mais encore souples. Cléa prend du poids et de la graisse pour réguler sa température." },
+      { w: 30, art: 'un',  taille: 39.9, poids: 1300, comp: 'chou pommé',          emoji: '🥬', desc: "Le lanugo (duvet) commence à disparaître. Les cheveux poussent et Cléa voit mieux la lumière qui filtre." },
+      { w: 31, art: 'une', taille: 41.1, poids: 1500, comp: 'noix de coco',        emoji: '🥥', desc: "Cléa bouge beaucoup mais l'espace devient plus restreint. Tu peux sentir distinctement ses pieds et ses coudes." },
+      { w: 32, art: 'un',  taille: 42.4, poids: 1700, comp: 'jicama',              emoji: '🥔', desc: "Cléa se positionne souvent tête en bas en prévision de l'accouchement. Les ongles atteignent le bout des doigts." },
       { w: 33, art: 'un',  taille: 43.7, poids: 1900, comp: 'ananas',              emoji: '🍍', desc: "Le système immunitaire se renforce grâce aux anticorps que tu transmets. La peau devient lisse et rosée." },
-      { w: 34, art: 'une', taille: 45,   poids: 2100, comp: 'courge butternut',    emoji: '🍠', desc: "Les poumons se préparent à respirer de l'air. Curtis entend tout très clairement maintenant." },
-      { w: 35, art: 'un',  taille: 46.2, poids: 2400, comp: 'melon',               emoji: '🍈', desc: "Curtis prend environ 200 g par semaine. Les reins fonctionnent et le foie traite déjà certains déchets." },
-      { w: 36, art: 'une', taille: 47.4, poids: 2600, comp: 'blette',              emoji: '🥬', desc: "Curtis est considéré « presque à terme ». Il continue de prendre du poids et de la graisse pour se préparer à la vie extérieure." },
-      { w: 37, art: 'un',  taille: 48.6, poids: 2850, comp: 'concombre',           emoji: '🥒', desc: "Curtis est considéré comme à terme ! Il pourrait naître à tout moment et serait parfaitement viable." },
-      { w: 38, art: 'une', taille: 49.8, poids: 3000, comp: 'citrouille',          emoji: '🎃', desc: "La plupart du vernix et du lanugo a disparu. Curtis est prêt, on attend juste son moment." },
-      { w: 39, art: 'une', taille: 50.7, poids: 3300, comp: 'pastèque',            emoji: '🍉', desc: "Curtis est pleinement développé. Ses ongles peuvent dépasser le bout des doigts et ses poumons sont matures." },
-      { w: 40, art: 'une', taille: 51.2, poids: 3500, comp: 'pastèque',            emoji: '🍉', desc: "Terme atteint ! Curtis peut arriver d'un jour à l'autre. Tu vas bientôt rencontrer ce petit être que tu portes depuis 9 mois." }
+      { w: 34, art: 'une', taille: 45,   poids: 2100, comp: 'courge butternut',    emoji: '🍠', desc: "Les poumons se préparent à respirer de l'air. Cléa entend tout très clairement maintenant." },
+      { w: 35, art: 'un',  taille: 46.2, poids: 2400, comp: 'melon',               emoji: '🍈', desc: "Cléa prend environ 200 g par semaine. Les reins fonctionnent et le foie traite déjà certains déchets." },
+      { w: 36, art: 'une', taille: 47.4, poids: 2600, comp: 'blette',              emoji: '🥬', desc: "Cléa est considéré « presque à terme ». Il continue de prendre du poids et de la graisse pour se préparer à la vie extérieure." },
+      { w: 37, art: 'un',  taille: 48.6, poids: 2850, comp: 'concombre',           emoji: '🥒', desc: "Cléa est considéré comme à terme ! Il pourrait naître à tout moment et serait parfaitement viable." },
+      { w: 38, art: 'une', taille: 49.8, poids: 3000, comp: 'citrouille',          emoji: '🎃', desc: "La plupart du vernix et du lanugo a disparu. Cléa est prêt, on attend juste son moment." },
+      { w: 39, art: 'une', taille: 50.7, poids: 3300, comp: 'pastèque',            emoji: '🍉', desc: "Cléa est pleinement développé. Ses ongles peuvent dépasser le bout des doigts et ses poumons sont matures." },
+      { w: 40, art: 'une', taille: 51.2, poids: 3500, comp: 'pastèque',            emoji: '🍉', desc: "Terme atteint ! Cléa peut arriver d'un jour à l'autre. Tu vas bientôt rencontrer ce petit être que tu portes depuis 9 mois." },
+      { w: 41, art: 'une', taille: 51.5, poids: 3600, comp: 'pastèque',            emoji: '🍉', desc: "Terme dépassé : on y est vraiment ! Si Cléa ne se décide pas, l'équipe médicale surveille de près et un déclenchement peut être proposé. Plus que quelques heures ou jours avant la rencontre." }
     ];
 
     /* ==========================================================
@@ -1485,7 +1506,7 @@
       { id: 'boudin-noir-cuit',   nom: 'Boudin noir bien cuit',     cat: 'Charcuterie', statut: 'ok',        explication: "Cuit, riche en fer.", alt: null },
 
       // ===== BOISSONS ALCOOLISÉES =====
-      { id: 'alcool',             nom: 'Alcool (toutes formes)',    cat: 'Alcool',      statut: 'interdit',  explication: "Aucune dose n'est sans risque pour Curtis. L'alcool traverse le placenta et peut causer un syndrome d'alcoolisation fœtale.", alt: 'Mocktails, jus, eaux pétillantes aromatisées.' },
+      { id: 'alcool',             nom: 'Alcool (toutes formes)',    cat: 'Alcool',      statut: 'interdit',  explication: "Aucune dose n'est sans risque pour Cléa. L'alcool traverse le placenta et peut causer un syndrome d'alcoolisation fœtale.", alt: 'Mocktails, jus, eaux pétillantes aromatisées.' },
       { id: 'vin',                nom: 'Vin, champagne',            cat: 'Alcool',      statut: 'interdit',  explication: "Aucune dose sûre. Même un verre occasionnel est déconseillé.", alt: 'Pétillant sans alcool, kombucha sans alcool.' },
       { id: 'biere',              nom: 'Bière',                     cat: 'Alcool',      statut: 'interdit',  explication: "Contient de l'alcool, à éviter totalement.", alt: 'Bière sans alcool (vérifie qu\'elle soit bien à 0,0%).' },
       { id: 'biere-sans-alcool',  nom: 'Bière sans alcool (0,0%)',  cat: 'Alcool',      statut: 'ok',        explication: "Une vraie 0,0% est sûre. Méfie-toi des « sans alcool » à 0,5% qui contiennent encore un peu d'alcool.", alt: null },
@@ -1596,7 +1617,7 @@
       { id: 'ketchup',            nom: 'Ketchup',                   cat: 'Condiments',  statut: 'ok',        explication: "Industriel pasteurisé, sans risque.", alt: null },
       { id: 'sauce-soja',         nom: 'Sauce soja',                cat: 'Condiments',  statut: 'ok',        explication: "Sans risque, mais très salée.", alt: null },
       { id: 'vinaigre',           nom: 'Vinaigre',                  cat: 'Condiments',  statut: 'ok',        explication: "Sans risque.", alt: null },
-      { id: 'huiles',             nom: 'Huiles (olive, colza…)',    cat: 'Condiments',  statut: 'ok',        explication: "Aucun problème, et bonnes pour Curtis (acides gras).", alt: null },
+      { id: 'huiles',             nom: 'Huiles (olive, colza…)',    cat: 'Condiments',  statut: 'ok',        explication: "Aucun problème, et bonnes pour Cléa (acides gras).", alt: null },
       { id: 'pesto-industriel',   nom: 'Pesto industriel',          cat: 'Condiments',  statut: 'ok',        explication: "Pasteurisé, sans risque.", alt: null },
       { id: 'pesto-frais',        nom: 'Pesto frais (au rayon frais)', cat: 'Condiments', statut: 'attention', explication: "Souvent contient du parmesan et des pignons crus : risque résiduel listeria.", alt: 'Pesto industriel longue conservation.' },
       { id: 'houmous',            nom: 'Houmous',                   cat: 'Condiments',  statut: 'ok',        explication: "Pois chiches cuits + tahini : sans risque.", alt: null },
@@ -1630,7 +1651,8 @@
     const STORAGE_KEY = 'maGrossesse:v1';
     const defaultState = {
       currentWeek: 12,
-      dueDate: null,
+      startDate: null,   // 1er jour des dernières règles (DDR) — point de départ du calcul (SA)
+      pinnedWeek: null, // semaine épinglée manuellement via les Réglages (persiste)
       darkMode: null, // null = follow system
       favorites: []
     };
@@ -1641,7 +1663,16 @@
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return { ...defaultState };
-        return { ...defaultState, ...JSON.parse(raw) };
+        const parsed = JSON.parse(raw);
+        // Migration : ancienne version stockait la DPA (dueDate).
+        // On en déduit la date de début de grossesse = DPA − 273 jours (39 sem.).
+        if (parsed.startDate == null && parsed.dueDate) {
+          const d = new Date(parsed.dueDate);
+          d.setDate(d.getDate() - 273);
+          parsed.startDate = d.toISOString().slice(0, 10);
+        }
+        delete parsed.dueDate;
+        return { ...defaultState, ...parsed };
       } catch {
         return { ...defaultState };
       }
@@ -1658,9 +1689,25 @@
     }
     function clamp(n, min, max) { return Math.min(max, Math.max(min, n)); }
     function trimesterOf(week) {
-      if (week <= 14) return 1;
+      // 1er trimestre : 0 à 13 SA + 6 j  ·  2e : 14 à 27 SA + 6 j  ·  3e : dès 28 SA
+      if (week <= 13) return 1;
       if (week <= 27) return 2;
       return 3;
+    }
+    function monthOf(week) {
+      // Correspondance officielle SA → mois de grossesse
+      if (week <= 6)  return 1;
+      if (week <= 10) return 2;
+      if (week <= 15) return 3;
+      if (week <= 19) return 4;
+      if (week <= 24) return 5;
+      if (week <= 28) return 6;
+      if (week <= 32) return 7;
+      if (week <= 36) return 8;
+      return 9; // 37 à 41 SA
+    }
+    function monthLabel(m) {
+      return m + (m === 1 ? 'er' : 'e') + ' mois';
     }
     function trimesterLabel(t) {
       return ['', 'Premier trimestre', 'Deuxième trimestre', 'Troisième trimestre'][t];
@@ -1673,21 +1720,53 @@
       if (g < 1000) return Math.round(g) + ' g';
       return (g / 1000).toFixed(g >= 2000 ? 1 : 2).replace('.', ',') + ' kg';
     }
-    function computeWeekFromDueDate(dueIso) {
-      if (!dueIso) return null;
-      const due = new Date(dueIso);
-      const conception = new Date(due);
-      conception.setDate(conception.getDate() - 280); // 40 SA = 280 jours depuis DDR
-      const diffMs = Date.now() - conception.getTime();
+    function computeWeekFromStartDate(startIso) {
+      if (!startIso) return null;
+      const start = new Date(startIso);
+      // startIso = date de début de grossesse (conception / DDG donnée par le médecin).
+      // Les SA se comptent depuis les dernières règles, ~14 jours AVANT la conception.
+      const diffMs = (Date.now() - start.getTime()) + 14 * 86400 * 1000;
+      if (diffMs < 0) return null;
       const weeks = Math.floor(diffMs / (7 * 86400 * 1000));
-      return clamp(weeks, 4, 40);
+      return clamp(weeks, 4, 41);
+    }
+    // Terme = début de grossesse (conception) + 39 semaines = +273 jours  (= 41 SA)
+    function computeDueDate(startIso) {
+      if (!startIso) return null;
+      const d = new Date(startIso);
+      d.setDate(d.getDate() + 273);
+      return d;
+    }
+    function formatFrDate(d) {
+      if (!d) return '';
+      return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+    function updateDueDateInfo() {
+      const el = document.getElementById('due-date-info');
+      if (!el) return;
+      const due = computeDueDate(state.startDate);
+      if (due) {
+        el.hidden = false;
+        el.innerHTML = `🗓️ Accouchement estimé : <strong>${formatFrDate(due)}</strong> (41 SA)`;
+      } else {
+        el.hidden = true;
+      }
     }
 
-    function refreshFromDueDate(animate = true) {
-      if (!state.dueDate) return;
-      const auto = computeWeekFromDueDate(state.dueDate);
-      if (auto && auto !== state.currentWeek) {
-        setWeek(auto, animate);
+    // Semaine de référence : épinglée (Réglages) si définie, sinon calculée
+    // depuis la date de début. null = aucune référence (on garde l'affichage).
+    function canonicalWeek() {
+      if (state.pinnedWeek != null) return clamp(state.pinnedWeek, 4, 41);
+      if (state.startDate) return computeWeekFromStartDate(state.startDate);
+      return null;
+    }
+
+    function refreshFromStartDate(animate = true) {
+      // On revient à la semaine de référence : consulter via la barre / les
+      // flèches du Suivi ne se sauvegarde pas, mais l'épinglage des Réglages oui.
+      const c = canonicalWeek();
+      if (c != null && c !== state.currentWeek) {
+        setWeek(c, animate);
       }
       updateActualWeekHint();
     }
@@ -1695,11 +1774,11 @@
     function updateActualWeekHint() {
       const hint = document.getElementById('actual-week-hint');
       if (!hint) return;
-      if (!state.dueDate) {
+      if (!state.startDate) {
         hint.hidden = true;
         return;
       }
-      const auto = computeWeekFromDueDate(state.dueDate);
+      const auto = computeWeekFromStartDate(state.startDate);
       if (auto && auto !== state.currentWeek) {
         hint.hidden = false;
         document.getElementById('actual-week-num').textContent = auto;
@@ -1714,6 +1793,7 @@
     const els = {
       weekNum: document.getElementById('week-num'),
       dayInfo: document.getElementById('day-info'),
+      monthInfo: document.getElementById('month-info'),
       trimesterChip: document.getElementById('trimester-chip'),
       sizeCircle: document.getElementById('size-circle'),
       sizeEmoji: document.getElementById('size-emoji'),
@@ -1761,21 +1841,25 @@
         const t = trimesterOf(data.w);
         els.trimesterChip.textContent = trimesterLabel(t);
 
-        // Header progress
-        const pct = ((data.w - 4) / 36) * 100;
+        // Mois de grossesse
+        if (els.monthInfo) els.monthInfo.textContent = monthLabel(monthOf(data.w)) + ' de grossesse';
+
+        // Header progress (4 → 41 SA)
+        const pct = clamp(((data.w - 4) / 37) * 100, 0, 100);
         els.progressFill.style.setProperty('--progress', pct + '%');
         els.metaWeek.textContent = `Semaine ${data.w}`;
         els.metaTrim.textContent = `T${t}`;
-        const remaining = 40 - data.w;
-        els.metaRemaining.textContent = remaining > 0 ? `${remaining} sem. restantes` : 'Terme atteint';
-        els.dayInfo.textContent = `≈ ${data.w * 7} jours · ${remaining} semaines restantes`;
+        const remaining = Math.max(0, 41 - data.w);
+        const remLabel = remaining > 1 ? `${remaining} sem. restantes` : (remaining === 1 ? '1 sem. restante' : 'Terme');
+        els.metaRemaining.textContent = remaining > 0 ? remLabel : 'Terme atteint';
+        els.dayInfo.textContent = `≈ ${data.w * 7} jours · ${remaining > 0 ? remLabel : 'terme atteint'}`;
 
         // Slider
         if (els.slider.value != data.w) els.slider.value = data.w;
 
         // Boutons enabled/disabled
         els.prevBtn.disabled = data.w <= 4;
-        els.nextBtn.disabled = data.w >= 40;
+        els.nextBtn.disabled = data.w >= 41;
 
         if (animate) {
           requestAnimationFrame(() => {
@@ -1792,7 +1876,7 @@
     }
 
     function setWeek(week, animate = true) {
-      week = clamp(week, 4, 40);
+      week = clamp(week, 4, 41);
       state.currentWeek = week;
       saveState();
       renderWeek(week, animate);
@@ -1984,6 +2068,10 @@
        NAVIGATION TABS
        ========================================================== */
     function switchTab(tab) {
+      // En changeant d'onglet, on revient à la semaine de référence : la barre
+      // et les flèches du Suivi ne servent qu'à consulter (pas de sauvegarde).
+      const c = canonicalWeek();
+      if (c != null && c !== state.currentWeek) setWeek(c, false);
       document.querySelectorAll('.view').forEach(v => {
         v.hidden = v.dataset.view !== tab;
       });
@@ -2018,12 +2106,11 @@
       // Apply theme
       applyTheme();
 
-      // Auto-compute week from due date if set (initial)
-      if (state.dueDate) {
-        const auto = computeWeekFromDueDate(state.dueDate);
-        if (auto) state.currentWeek = auto;
-      }
-      state.currentWeek = clamp(state.currentWeek, 4, 40);
+      // Au démarrage : on affiche la semaine de référence (épinglée via les
+      // Réglages si définie, sinon calculée depuis la date de début).
+      const cInit = canonicalWeek();
+      if (cInit != null) state.currentWeek = cInit;
+      state.currentWeek = clamp(state.currentWeek, 4, 41);
 
       // Initial render
       setWeek(state.currentWeek, false);
@@ -2033,7 +2120,8 @@
 
       // Settings UI
       document.getElementById('set-week-value').textContent = state.currentWeek;
-      if (state.dueDate) document.getElementById('due-date').value = state.dueDate;
+      if (state.startDate) document.getElementById('start-date').value = state.startDate;
+      updateDueDateInfo();
       document.getElementById('dark-toggle').checked = state.darkMode === true || (state.darkMode === null && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
       // Tab navigation
@@ -2041,7 +2129,7 @@
         btn.addEventListener('click', () => switchTab(btn.dataset.tab));
       });
 
-      // Week navigation
+      // Week navigation (navigation manuelle → on fige sur la semaine choisie)
       els.prevBtn.addEventListener('click', () => setWeek(state.currentWeek - 1));
       els.nextBtn.addEventListener('click', () => setWeek(state.currentWeek + 1));
       els.slider.addEventListener('input', e => setWeek(parseInt(e.target.value, 10), false));
@@ -2063,35 +2151,44 @@
         if (state.darkMode === null) applyTheme();
       });
 
-      // Settings: due date
-      document.getElementById('due-date').addEventListener('change', e => {
-        state.dueDate = e.target.value || null;
-        if (state.dueDate) {
-          const auto = computeWeekFromDueDate(state.dueDate);
+      // Settings: date de début de grossesse
+      document.getElementById('start-date').addEventListener('change', e => {
+        state.startDate = e.target.value || null;
+        state.pinnedWeek = null; // nouvelle date → on repart sur le calcul auto
+        if (state.startDate) {
+          const auto = computeWeekFromStartDate(state.startDate);
           if (auto) setWeek(auto);
         }
         saveState();
+        updateDueDateInfo();
       });
 
-      // Settings: stepper
-      document.getElementById('set-week-minus').addEventListener('click', () => setWeek(state.currentWeek - 1));
-      document.getElementById('set-week-plus').addEventListener('click', () => setWeek(state.currentWeek + 1));
+      // Settings: stepper → épingle la semaine choisie (elle se fixe et persiste)
+      document.getElementById('set-week-minus').addEventListener('click', () => {
+        state.pinnedWeek = clamp(state.currentWeek - 1, 4, 41);
+        setWeek(state.pinnedWeek);
+      });
+      document.getElementById('set-week-plus').addEventListener('click', () => {
+        state.pinnedWeek = clamp(state.currentWeek + 1, 4, 41);
+        setWeek(state.pinnedWeek);
+      });
 
-      // Bouton "Y revenir" : retour à la semaine actuelle calculée depuis DPA
+      // Bouton "Y revenir" : désépingle et revient à la semaine calculée
       document.getElementById('goto-actual-week').addEventListener('click', () => {
-        if (!state.dueDate) return;
-        const auto = computeWeekFromDueDate(state.dueDate);
+        if (!state.startDate) return;
+        state.pinnedWeek = null;
+        const auto = computeWeekFromStartDate(state.startDate);
         if (auto) setWeek(auto);
       });
 
-      // Recalcul dynamique : à chaque retour sur l'app, on recalcule la semaine
-      // depuis la DPA. Si l'utilisatrice avait navigué manuellement, elle est
-      // automatiquement ramenée à sa vraie semaine actuelle.
+      // Recalcul dynamique : à chaque retour sur l'app, on revient à la semaine
+      // de référence (épinglée via les Réglages si définie, sinon calculée depuis
+      // la date de début). La consultation via la barre/les flèches ne persiste pas.
       document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') refreshFromDueDate(true);
+        if (document.visibilityState === 'visible') refreshFromStartDate(true);
       });
-      window.addEventListener('focus', () => refreshFromDueDate(true));
-      window.addEventListener('pageshow', () => refreshFromDueDate(false));
+      window.addEventListener('focus', () => refreshFromStartDate(true));
+      window.addEventListener('pageshow', () => refreshFromStartDate(false));
 
       // Reset
       document.getElementById('reset-data').addEventListener('click', () => {
